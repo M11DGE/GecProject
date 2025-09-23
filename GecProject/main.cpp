@@ -83,7 +83,6 @@ int main()
        
         // Draw the shape
         window.draw(sprite);
-        window.setFramerateLimit(20);
 
         // UI needs drawing last
         ImGui::SFML::Render(window);
