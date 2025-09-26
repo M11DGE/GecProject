@@ -326,29 +326,7 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     template <typename TEventSubtype>
-    [[nodiscard]] TEventSubtype* getIf();
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Attempt to get specified event subtype
-    ///
-    /// \tparam `TEventSubtype` Type of the desired event subtype
-    ///
-    /// \return Address of current event subtype, otherwise `nullptr`
-    ///
-    ////////////////////////////////////////////////////////////
-    template <typename TEventSubtype>
     [[nodiscard]] const TEventSubtype* getIf() const;
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Apply a visitor to the event
-    ///
-    /// \param visitor The visitor to apply
-    ///
-    /// \return The result of applying the visitor to the event
-    ///
-    ////////////////////////////////////////////////////////////
-    template <typename Visitor>
-    decltype(auto) visit(Visitor&& visitor);
 
     ////////////////////////////////////////////////////////////
     /// \brief Apply a visitor to the event

@@ -303,7 +303,6 @@ template <typename T>
 
 // Aliases for the most common types
 using Vector3i = Vector3<int>;
-using Vector3u = Vector3<unsigned int>;
 using Vector3f = Vector3<float>;
 
 } // namespace sf

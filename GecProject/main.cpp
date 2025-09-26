@@ -13,10 +13,16 @@ void DefineGUI();
 
 float x = 50;
 float y = 50;
-int scale = 1;
+int scale = 0;
 float height = 65.125f;
+int state = 0;
+int fps = 0;
+int frames = 0;
 
+void loadTextures() {
+    
 
+}
 int main()
 {
     // Redirect cout to the Visual Studio output pane
@@ -37,20 +43,36 @@ int main()
     if (!ImGui::SFML::Init(window))
         return -1;
 
-    // Create a simple shape to draw
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-   
 
-    sf::Texture texture1("Data/Textures/MaleZombie/attack_combined.png");
-    if (!texture1.loadFromFile("Data/Textures/MaleZombie/attack_combined.png"))
+   sf::Texture attack("Data/Textures/MaleZombie/attack_combined.png");
+    if (!attack.loadFromFile("Data/Textures/MaleZombie/attack_combined.png"))
     {
         std::cout << "could not load texture" << std::endl;
-        return-1;
+        return -1;
+    }
+    sf::Texture dead("Data/Textures/MaleZombie/dead_combined.png");
+    if (!dead.loadFromFile("Data/Textures/MaleZombie/dead_combined.png"))
+    {
+        std::cout << "could not load texture" << std::endl;
+        return -1;
+    }
+    sf::Texture idle("Data/Textures/MaleZombie/idle_combined.png");
+    if (!idle.loadFromFile("Data/Textures/MaleZombie/idle_combined.png"))
+    {
+        std::cout << "could not load texture" << std::endl;
+        return -1;
+    }
+    sf::Texture walk("Data/Textures/MaleZombie/walk_combined.png");
+    if (!walk.loadFromFile("Data/Textures/MaleZombie/walk_combined.png"))
+    {
+        std::cout << "could not load texture" << std::endl;
+        return -1;
     }
 
-
-    sf::Sprite sprite(texture1);
+    sf::Clock clock;
+    sf::Clock fpsTimer;
+    fpsTimer.start();
+    sf::Sprite sprite(attack);
     
     // Clock required by ImGui
     sf::Clock uiDeltaClock;
@@ -76,7 +98,56 @@ int main()
 
         sprite.setPosition({ x,y });
         //sprite.setScale({ scale, scale });
-        sprite.setTextureRect(sf::IntRect({ 0,int(scale*521) }, { 432,521 }));
+        switch (state)
+        {
+        case 0:
+            sprite.setTexture(attack);
+            sprite.setTextureRect(sf::IntRect({ 0,scale*521 }, { 432,521 }));
+            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
+                scale++;
+                clock.restart();
+                if (scale > 7)
+                    scale = 0;
+                }
+            break;
+        case 1:
+            sprite.setTexture(dead);
+            sprite.setTextureRect(sf::IntRect({ 0,scale * 528 }, { 631,528 }));
+            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
+                scale++;
+                clock.restart();
+                if (scale > 11)
+                    scale = 0;
+            }
+            break;
+        case 2:
+            sprite.setTexture(idle);
+            sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
+            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
+                scale++;
+                clock.restart();
+                if (scale > 14)
+                    scale = 0;
+            }
+            break;
+        case 3:
+            sprite.setTexture(walk);
+            sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
+            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
+                scale++;
+                clock.restart();
+                if (scale > 9)
+                    scale = 0;
+            }
+            break;
+        }
+        frames ++;
+        if (fpsTimer.getElapsedTime().asSeconds() >= 1) {
+            fps = frames;
+            std::cout << frames << std::endl;
+            frames = 0;
+            fpsTimer.restart();
+        }
 
         // Clear the window
         window.clear();
@@ -88,7 +159,6 @@ int main()
         ImGui::SFML::Render(window);
 
         window.display();
-        scale = (scale + 1) % 8;
     }
 
     std::cout << "Finished!" << std::endl;
@@ -111,17 +181,24 @@ void DefineGUI()
 
     ImGui::Text("Some Text.");	      	// Display some text (you can use a format strings too)	
 
-    ImGui::Button("Button");			// Buttons return true when clicked (most widgets return true when edited/activated)
-    
+    bool result = ImGui::Button("Change animation");      // Buttons return true when clicked (most widgets return true when edited/activated)
+    if (result == true) {
+        state++;
+        scale = 0;
+        if (state > 3)
+            state = 0;
+    }
+
  //   ImGui::Checkbox("Wireframe", &m_wireframe);	// A checkbox linked to a member variable
 
   //  ImGui::Checkbox("Cull Face", &m_cullFace);
 
     ImGui::SliderFloat("X", &x, 1, 800);
     ImGui::SliderFloat("Y", &y, 1, 600);
-    ImGui::SliderInt("SCALE", &scale, 0, 7);
 
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    std::string fpsText = "fps is " + std::to_string(fps);
+    ImGui::Text(fpsText.c_str());
 
     ImGui::End();
 }

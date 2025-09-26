@@ -63,8 +63,6 @@
 #   add_executable(myapp ...)
 #   target_link_libraries(myapp PRIVATE SFML::Graphics SFML::Audio)
 
-cmake_policy(VERSION 3.22...3.31)
-
 if(NOT SFML_FIND_COMPONENTS)
     message(FATAL_ERROR "find_package(SFML) called with no component")
 endif()
@@ -118,7 +116,7 @@ list(REMOVE_DUPLICATES FIND_SFML_COMPONENTS_SORTED)
 
 # Choose which target definitions must be imported
 if(SFML_STATIC_LIBRARIES)
-    set(SFML_IS_FRAMEWORK_INSTALL "FALSE")
+    set(SFML_IS_FRAMEWORK_INSTALL "")
     if(SFML_IS_FRAMEWORK_INSTALL)
         message(WARNING "Static frameworks are not supported by SFML. Clear cache entries, \
 and either change SFML_STATIC_LIBRARIES or CMAKE_FIND_FRAMEWORK before calling find_package(SFML)")
@@ -178,7 +176,7 @@ foreach(component ${FIND_SFML_COMPONENTS_SORTED})
 endforeach()
 
 if(SFML_FOUND)
-    set(SFML_VERSION_IS_RELEASE OFF)
+    set(SFML_VERSION_IS_RELEASE ON)
 else()
     if(SFML_FIND_REQUIRED)
         # fatal error
@@ -190,5 +188,5 @@ else()
 endif()
 
 if(SFML_FOUND AND NOT SFML_FIND_QUIETLY)
-    message(STATUS "Found SFML 3.1.0 in ${CMAKE_CURRENT_LIST_DIR}")
+    message(STATUS "Found SFML 3.0.1 in ${CMAKE_CURRENT_LIST_DIR}")
 endif()
