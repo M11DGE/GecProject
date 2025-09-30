@@ -5,7 +5,7 @@
 
 #include "ExternalHeaders.h"
 #include "RedirectCout.h"
-
+#include <map>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
@@ -14,15 +14,36 @@ void DefineGUI();
 float x = 50;
 float y = 50;
 int scale = 0;
-float height = 65.125f;
 int state = 0;
+float height = 65.125f;
 int fps = 0;
 int frames = 0;
 
-void loadTextures() {
-    
+void Inputs(sf::Sprite &sprite) {
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+        y -= 0.05;
+        state = 3;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+        x -= 0.05;
+        state = 3;
+        sprite.setScale({ -1, 1 });
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        y += 0.05;
+        state = 3;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+        x += 0.05;
+        state = 3;
+        sprite.setScale({ 1, 1 });
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+        state = 0;
 
 }
+
 int main()
 {
     // Redirect cout to the Visual Studio output pane
@@ -68,11 +89,13 @@ int main()
         std::cout << "could not load texture" << std::endl;
         return -1;
     }
+    std::unordered_map<int, sf::Texture> zombieTextures = { {1, attack},{2,dead},{3,idle},{4,walk} };
 
     sf::Clock clock;
     sf::Clock fpsTimer;
     fpsTimer.start();
     sf::Sprite sprite(attack);
+    
     
     // Clock required by ImGui
     sf::Clock uiDeltaClock;
@@ -101,17 +124,17 @@ int main()
         switch (state)
         {
         case 0:
-            sprite.setTexture(attack);
-            sprite.setTextureRect(sf::IntRect({ 0,scale*521 }, { 432,521 }));
+            sprite.setTexture(zombieTextures[1]);
+            sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
             if (clock.getElapsedTime().asSeconds() >= 0.07f) {
                 scale++;
                 clock.restart();
                 if (scale > 7)
                     scale = 0;
-                }
+            }
             break;
         case 1:
-            sprite.setTexture(dead);
+            sprite.setTexture(zombieTextures[2]);
             sprite.setTextureRect(sf::IntRect({ 0,scale * 528 }, { 631,528 }));
             if (clock.getElapsedTime().asSeconds() >= 0.07f) {
                 scale++;
@@ -121,7 +144,7 @@ int main()
             }
             break;
         case 2:
-            sprite.setTexture(idle);
+            sprite.setTexture(zombieTextures[3]);
             sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
             if (clock.getElapsedTime().asSeconds() >= 0.07f) {
                 scale++;
@@ -131,7 +154,7 @@ int main()
             }
             break;
         case 3:
-            sprite.setTexture(walk);
+            sprite.setTexture(zombieTextures[4]);
             sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
             if (clock.getElapsedTime().asSeconds() >= 0.07f) {
                 scale++;
@@ -144,11 +167,12 @@ int main()
         frames ++;
         if (fpsTimer.getElapsedTime().asSeconds() >= 1) {
             fps = frames;
-            std::cout << frames << std::endl;
+            std::cout << fps << std::endl;
             frames = 0;
             fpsTimer.restart();
         }
-
+        
+        Inputs(sprite);
         // Clear the window
         window.clear();
        
@@ -157,6 +181,7 @@ int main()
 
         // UI needs drawing last
         ImGui::SFML::Render(window);
+        
 
         window.display();
     }
@@ -192,9 +217,6 @@ void DefineGUI()
  //   ImGui::Checkbox("Wireframe", &m_wireframe);	// A checkbox linked to a member variable
 
   //  ImGui::Checkbox("Cull Face", &m_cullFace);
-
-    ImGui::SliderFloat("X", &x, 1, 800);
-    ImGui::SliderFloat("Y", &y, 1, 600);
 
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     std::string fpsText = "fps is " + std::to_string(fps);
