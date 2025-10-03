@@ -8,6 +8,7 @@
 #include <map>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "Graphics.h"
 
 void DefineGUI();
 
@@ -64,6 +65,9 @@ int main()
     if (!ImGui::SFML::Init(window))
         return -1;
 
+    Graphics* graphics = new Graphics;
+
+    graphics->LoadTexture("attack", "Data/Textures/MaleZombie/attack_combined.png");
 
    sf::Texture attack("Data/Textures/MaleZombie/attack_combined.png");
     if (!attack.loadFromFile("Data/Textures/MaleZombie/attack_combined.png"))
