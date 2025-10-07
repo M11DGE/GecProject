@@ -23,20 +23,20 @@ int frames = 0;
 void Inputs(sf::Sprite &sprite) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        y -= 0.05;
+        y -= 0.05f;
         state = 3;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        x -= 0.05;
+        x -= 0.05f;
         state = 3;
         sprite.setScale({ -1, 1 });
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        y += 0.05;
+        y += 0.05f;
         state = 3;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        x += 0.05;
+        x += 0.05f;
         state = 3;
         sprite.setScale({ 1, 1 });
     }
@@ -64,10 +64,6 @@ int main()
     // Set up ImGui (the UI library)
     if (!ImGui::SFML::Init(window))
         return -1;
-
-    Graphics* graphics = new Graphics;
-
-    graphics->LoadTexture("attack", "Data/Textures/MaleZombie/attack_combined.png");
 
    sf::Texture attack("Data/Textures/MaleZombie/attack_combined.png");
     if (!attack.loadFromFile("Data/Textures/MaleZombie/attack_combined.png"))
@@ -99,7 +95,12 @@ int main()
     sf::Clock fpsTimer;
     fpsTimer.start();
     sf::Sprite sprite(attack);
+    Graphics* graphics = new Graphics;
     
+    if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
+        return -1;
+    graphics->CreateSprite("Zombie");
+    graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
     
     // Clock required by ImGui
     sf::Clock uiDeltaClock;
@@ -125,6 +126,7 @@ int main()
 
         sprite.setPosition({ x,y });
         //sprite.setScale({ scale, scale });
+     
         switch (state)
         {
         case 0:
@@ -181,7 +183,8 @@ int main()
         window.clear();
        
         // Draw the shape
-        window.draw(sprite);
+        //window.draw(sprite);
+        graphics->DrawSprite("Zombie", { 50,50 }, "Attack Ani", 0, window, clock);
 
         // UI needs drawing last
         ImGui::SFML::Render(window);
@@ -191,6 +194,8 @@ int main()
     }
 
     std::cout << "Finished!" << std::endl;
+
+    delete graphics;
 
 	ImGui::SFML::Shutdown();
 

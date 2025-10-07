@@ -1,12 +1,11 @@
 #pragma once
 #include <string>
-class AnimationSetData 
+struct AnimationSetData 
 {
-private:
-	std::string m_TextureName;
+	std::string m_textureName;
 	int m_NumOfFrames{ 0 };
 	int m_SizeX{ 0 };
-	int m_Sizey{ 0 };
-public:
-	AnimationSetData(const std::string name);
+	int m_SizeY{ 0 };
+
+	AnimationSetData(const std::string textureName, const int NumOfFrames, const int xSize, const int ySize);
 };

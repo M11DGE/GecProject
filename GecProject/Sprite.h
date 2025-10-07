@@ -15,5 +15,6 @@ private:
 	std::unordered_map<std::string, AnimationSet> m_AnimationSet;
 public:
 	void AddAnimationSet(const std::string& name,const AnimationSetData& setData, sf::Texture* texture);
+	void DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, int frameNum, sf::RenderWindow& window, sf::Clock& clock);
 };
 
