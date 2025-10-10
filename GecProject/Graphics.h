@@ -14,6 +14,8 @@ public:
 	sf::Texture GetTexture(const std::string& name);
 	bool AddAnimationSet(const std::string& spriteName, const std::string& setName, const AnimationSetData& setData );
 	bool CreateSprite(const std::string& name);
-	void DrawSprite(const std::string& spriteName, sf::Vector2f pos, const std::string& spriteAnimationSet, int frameNum, sf::RenderWindow& window, sf::Clock& clock);
+	void DrawSprite(const std::string& spriteName, sf::Vector2f pos, const std::string& spriteAnimationSet, sf::RenderWindow& window);
+	void UpdateSprite(const std::string spriteName, sf::Clock& clock);
+	void ChangeTexture(const std::string spriteName, const std::string textureName);
 };
 

@@ -20,16 +20,20 @@ float height = 65.125f;
 int fps = 0;
 int frames = 0;
 
-void Inputs(sf::Sprite &sprite) {
+void Inputs(sf::Sprite &sprite, Graphics* graphics) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
         y -= 0.05f;
         state = 3;
+        graphics->ChangeTexture("Zombie", "Attack Ani");
+        graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
         x -= 0.05f;
         state = 3;
         sprite.setScale({ -1, 1 });
+        graphics->ChangeTexture("Zombie", "Idle Ani");
+        graphics->AddAnimationSet("Zombie", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
         y += 0.05f;
@@ -43,6 +47,14 @@ void Inputs(sf::Sprite &sprite) {
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
         state = 0;
 
+}
+
+void LoadTextures(Graphics* graphics)
+{
+    if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
+        return;
+    if (!graphics->LoadTexture("Idle Ani", "Data/Textures/MaleZombie/idle_combined.png"))
+        return;
 }
 
 int main()
@@ -65,7 +77,7 @@ int main()
     if (!ImGui::SFML::Init(window))
         return -1;
 
-   sf::Texture attack("Data/Textures/MaleZombie/attack_combined.png");
+   /*sf::Texture attack("Data/Textures/MaleZombie/attack_combined.png");
     if (!attack.loadFromFile("Data/Textures/MaleZombie/attack_combined.png"))
     {
         std::cout << "could not load texture" << std::endl;
@@ -89,16 +101,15 @@ int main()
         std::cout << "could not load texture" << std::endl;
         return -1;
     }
-    std::unordered_map<int, sf::Texture> zombieTextures = { {1, attack},{2,dead},{3,idle},{4,walk} };
+    std::unordered_map<int, sf::Texture> zombieTextures = { {1, attack},{2,dead},{3,idle},{4,walk} };*/
 
     sf::Clock clock;
     sf::Clock fpsTimer;
     fpsTimer.start();
-    sf::Sprite sprite(attack);
+   /* sf::Sprite sprite(attack);*/
     Graphics* graphics = new Graphics;
     
-    if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
-        return -1;
+    LoadTextures(graphics);
     graphics->CreateSprite("Zombie");
     graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
     
@@ -124,10 +135,9 @@ int main()
         // The UI gets defined each time
         DefineGUI();
 
-        sprite.setPosition({ x,y });
         //sprite.setScale({ scale, scale });
      
-        switch (state)
+       /* switch (state)
         {
         case 0:
             sprite.setTexture(zombieTextures[1]);
@@ -176,16 +186,17 @@ int main()
             std::cout << fps << std::endl;
             frames = 0;
             fpsTimer.restart();
-        }
+        }*/
         
-        Inputs(sprite);
-        // Clear the window
+        /*Inputs(sprite);*/
+
+        //Clear the window
         window.clear();
        
         // Draw the shape
         //window.draw(sprite);
-        graphics->DrawSprite("Zombie", { 50,50 }, "Attack Ani", 0, window, clock);
-
+        graphics->DrawSprite("Zombie", { 50,50 }, "Attack Ani", window);
+        graphics->UpdateSprite("Zombie", clock);
         // UI needs drawing last
         ImGui::SFML::Render(window);
         
@@ -232,4 +243,11 @@ void DefineGUI()
     ImGui::Text(fpsText.c_str());
 
     ImGui::End();
+}
+void LoadTextures(Graphics* graphics)
+{
+    if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
+        return;
+    if (!graphics->LoadTexture("Idle Ani", "Data/Textures/MaleZombie/idle_combined.png"))
+        return;
 }

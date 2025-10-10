@@ -4,21 +4,31 @@ void Sprite::AddAnimationSet(const std::string& name, const AnimationSetData& se
 {
 	if (m_AnimationSet.find(name) != m_AnimationSet.end())
 		return;
-	m_AnimationSet[name] = AnimationSet{ setData , texture };
+    m_AnimationSet[name] = AnimationSet(setData, texture);
 }
 
-void Sprite::DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, int frameNum, sf::RenderWindow& window, sf::Clock& clock)
+void Sprite::DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, sf::RenderWindow& window)
 {
-	sf::Sprite sfmlSprite(*m_AnimationSet[spriteAnimationSet].sfmlTexture);
-    int scale = frameNum;
+	    window.draw(*m_sprite);
+}
 
-
-    sfmlSprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
+void Sprite::Update(sf::Clock& clock)
+{
+    m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * 521 }, { 432,521 }));
     if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-        scale++;
+        m_frameNum++;
         clock.restart();
-        if (scale > 7)
-            scale = 0;
+        if (m_frameNum > 7)
+            m_frameNum = 0;
     }
-    window.draw(sfmlSprite);
+}
+
+void Sprite::ChangeTexture(const std::string textureName)
+{
+    m_sprite->setTexture(*m_AnimationSet[textureName].sfmlTexture);
+}
+
+AnimationSet::AnimationSet(const AnimationSetData& setDataData, sf::Texture* texture) : setData(setDataData), sfmlTexture(texture)
+{
+    
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 struct AnimationSetData 
 {
 	std::string m_textureName;
@@ -8,4 +9,5 @@ struct AnimationSetData
 	int m_SizeY{ 0 };
 
 	AnimationSetData(const std::string textureName, const int NumOfFrames, const int xSize, const int ySize);
+	AnimationSetData() {}
 };
