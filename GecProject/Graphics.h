@@ -14,8 +14,11 @@ public:
 	sf::Texture GetTexture(const std::string& name);
 	bool AddAnimationSet(const std::string& spriteName, const std::string& setName, const AnimationSetData& setData );
 	bool CreateSprite(const std::string& name);
-	void DrawSprite(const std::string& spriteName, sf::Vector2f pos, const std::string& spriteAnimationSet, sf::RenderWindow& window);
-	void UpdateSprite(const std::string spriteName, sf::Clock& clock);
-	void ChangeTexture(const std::string spriteName, const std::string textureName);
+	void DrawSprite(const std::string& spriteName, const sf::Vector2f& pos, const std::string& spriteAnimationSet, sf::RenderWindow& window);
+	void UpdateSprite(const std::string& spriteName, sf::Clock& clock);
+	void ChangeTexture(const std::string& spriteName, const std::string& textureName);
+	sf::Vector2f GetSpritePos(const std::string& spriteName);
+	void SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance);
+	void FlipSprite(const std::string& spriteName, const int& flip);
 };
 

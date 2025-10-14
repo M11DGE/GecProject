@@ -20,41 +20,42 @@ float height = 65.125f;
 int fps = 0;
 int frames = 0;
 
-void Inputs(sf::Sprite &sprite, Graphics* graphics) {
+void Inputs(Graphics* graphics) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        y -= 0.05f;
-        state = 3;
-        graphics->ChangeTexture("Zombie", "Attack Ani");
-        graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
+        graphics->SetSpritePos("Zombie", sf::Vector2f(0, -0.05f));
+        graphics->ChangeTexture("Zombie", "Walk Ani");
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        x -= 0.05f;
-        state = 3;
-        sprite.setScale({ -1, 1 });
-        graphics->ChangeTexture("Zombie", "Idle Ani");
-        graphics->AddAnimationSet("Zombie", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
+        graphics->SetSpritePos("Zombie", sf::Vector2f(-0.05f, 0));
+        graphics->ChangeTexture("Zombie", "Walk Ani");
+        graphics->FlipSprite("Zombie", -1);
+
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        y += 0.05f;
-        state = 3;
+        graphics->SetSpritePos("Zombie", sf::Vector2f(0, 0.05f));
+        graphics->ChangeTexture("Zombie", "Walk Ani");
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        x += 0.05f;
-        state = 3;
-        sprite.setScale({ 1, 1 });
+        graphics->SetSpritePos("Zombie", sf::Vector2f(0.05f, 0));
+        graphics->ChangeTexture("Zombie", "Walk Ani");
+        graphics->FlipSprite("Zombie", 1);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
-        state = 0;
+        graphics->ChangeTexture("Zombie", "Dead Ani");
 
 }
 
-void LoadTextures(Graphics* graphics)
+int LoadTextures(Graphics* graphics)
 {
     if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
-        return;
+        return -1;
     if (!graphics->LoadTexture("Idle Ani", "Data/Textures/MaleZombie/idle_combined.png"))
-        return;
+        return -1;
+    if (!graphics->LoadTexture("Dead Ani", "Data/Textures/MaleZombie/dead_combined.png"))
+        return -1;
+    if (!graphics->LoadTexture("Walk Ani", "Data/Textures/MaleZombie/walk_combined.png"))
+        return -1;
 }
 
 int main()
@@ -112,6 +113,9 @@ int main()
     LoadTextures(graphics);
     graphics->CreateSprite("Zombie");
     graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
+    graphics->AddAnimationSet("Zombie", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
+    graphics->AddAnimationSet("Zombie", "Dead Ani", AnimationSetData("Dead Ani", 12, 631, 528));
+    graphics->AddAnimationSet("Zombie", "Walk Ani", AnimationSetData("Walk Ani", 10, 631, 528));
     
     // Clock required by ImGui
     sf::Clock uiDeltaClock;
@@ -188,7 +192,7 @@ int main()
             fpsTimer.restart();
         }*/
         
-        /*Inputs(sprite);*/
+        Inputs(graphics);
 
         //Clear the window
         window.clear();
@@ -243,11 +247,4 @@ void DefineGUI()
     ImGui::Text(fpsText.c_str());
 
     ImGui::End();
-}
-void LoadTextures(Graphics* graphics)
-{
-    if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
-        return;
-    if (!graphics->LoadTexture("Idle Ani", "Data/Textures/MaleZombie/idle_combined.png"))
-        return;
 }
