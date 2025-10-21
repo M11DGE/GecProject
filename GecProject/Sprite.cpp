@@ -15,7 +15,7 @@ void Sprite::DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, sf:
 	    window.draw(*m_sprite);
 }
 
-void Sprite::Update(sf::Clock& clock)
+void Sprite::Update(sf::Clock& clock, const MyRectangle& rect)
 {
     m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * 521 }, { m_intRectSize }));
     if (clock.getElapsedTime().asSeconds() >= 0.07f) {
@@ -24,6 +24,9 @@ void Sprite::Update(sf::Clock& clock)
         if (m_frameNum > (m_AnimationSet[m_currentTex].setData.m_NumOfFrames - 1))
             m_frameNum = 0;
     }
+
+    m_rectangle->SetRectangle(m_sprite->getPosition().x, (m_sprite->getPosition().x) + m_AnimationSet[m_currentTex].setData.m_XAndY.x, m_sprite->getPosition().y, (m_sprite->getPosition().y) + m_AnimationSet[m_currentTex].setData.m_XAndY.y);
+    m_rectangle->DoTheyIntersect(rect);
 }
 
 void Sprite::ChangeTexture(const std::string& textureName)
@@ -51,6 +54,7 @@ void Sprite::Flip(const int& flip)
     {
         m_sprite->setScale({ -1, 1 });
         SetPos({ 421,0 });
+        m_rectangle->Move(421, 0);
         m_flip = -1;
         return;
     }
@@ -58,9 +62,15 @@ void Sprite::Flip(const int& flip)
     {
         m_sprite->setScale({ 1, 1 });
         SetPos({-421,0});
+        m_rectangle->Move(-421, 0);
         m_flip = 1;
         return;
     }
+}
+
+MyRectangle Sprite::GetRect()
+{
+    return *m_rectangle;
 }
 
 AnimationSet::AnimationSet(const AnimationSetData& setDataData, sf::Texture* texture) : setData(setDataData), sfmlTexture(texture)

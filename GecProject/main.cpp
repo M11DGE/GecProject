@@ -9,8 +9,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Graphics.h"
+#include "Rectangle.h"
 
-void DefineGUI();
+void DefineGUI(); 
 
 float x = 50;
 float y = 50;
@@ -107,15 +108,29 @@ int main()
     sf::Clock clock;
     sf::Clock fpsTimer;
     fpsTimer.start();
+
+    MyRectangle* rect1 = new MyRectangle;
+    rect1->SetRectangle(5, 10, 5, 10);
+    MyRectangle* rect2 = new MyRectangle;
+    rect2->SetRectangle(4, 11, 4,11);
+    if (rect1->DoTheyIntersect(*rect2) == true)
+        std::cout << "they intersect" << std::endl;
+    else if(rect1->DoTheyIntersect(*rect2) == false)
+        std::cout << "they do not intersect" << std::endl;
+
    /* sf::Sprite sprite(attack);*/
+
     Graphics* graphics = new Graphics;
-    
     LoadTextures(graphics);
     graphics->CreateSprite("Zombie");
     graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
     graphics->AddAnimationSet("Zombie", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
     graphics->AddAnimationSet("Zombie", "Dead Ani", AnimationSetData("Dead Ani", 12, 631, 528));
-    graphics->AddAnimationSet("Zombie", "Walk Ani", AnimationSetData("Walk Ani", 10, 631, 528));
+    graphics->AddAnimationSet("Zombie", "Walk Ani", AnimationSetData("Walk Ani", 10, 432, 521));
+
+    graphics->CreateSprite("Greg");
+    graphics->AddAnimationSet("Greg", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
+    graphics->ChangeTexture("Greg", "Idle Ani");
     
     // Clock required by ImGui
     sf::Clock uiDeltaClock;
@@ -200,7 +215,8 @@ int main()
         // Draw the shape
         //window.draw(sprite);
         graphics->DrawSprite("Zombie", { 50,50 }, "Attack Ani", window);
-        graphics->UpdateSprite("Zombie", clock);
+        graphics->DrawSprite("Greg", { 300,0 }, "Idle Ani", window);
+        graphics->UpdateSprite("Zombie", clock, graphics->GetRectangle("Greg"));
         // UI needs drawing last
         ImGui::SFML::Render(window);
         

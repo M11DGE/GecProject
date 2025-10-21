@@ -145,6 +145,7 @@
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RedirectCout.h" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="AnimationSetData.h" />
     <ClInclude Include="ExternalHeaders.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

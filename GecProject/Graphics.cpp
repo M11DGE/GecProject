@@ -54,9 +54,9 @@ void Graphics::DrawSprite(const std::string& spriteName,const sf::Vector2f& pos,
     m_spriteMap[spriteName]->DrawSprite(pos, spriteAnimationSet, window);
 }
 
-void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock)
+void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock, const MyRectangle& rect)
 {
-    m_spriteMap[spriteName]->Update(clock);
+    m_spriteMap[spriteName]->Update(clock, rect);
 }
 
 void Graphics::ChangeTexture(const std::string& spriteName, const std::string& textureName)
@@ -77,5 +77,10 @@ void Graphics::SetSpritePos(const std::string& spriteName, const sf::Vector2f& d
 void Graphics::FlipSprite(const std::string& spriteName,const int& flip)
 {
     m_spriteMap[spriteName]->Flip(flip);
+}
+
+MyRectangle Graphics::GetRectangle(const std::string& spriteName)
+{
+    return m_spriteMap[spriteName]->GetRect();
 }
 
