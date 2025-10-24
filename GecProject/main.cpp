@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include "Graphics.h"
 #include "Rectangle.h"
+#include <vector>
 
 void DefineGUI(); 
 
@@ -24,26 +25,28 @@ int frames = 0;
 void Inputs(Graphics* graphics) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        graphics->SetSpritePos("Zombie", sf::Vector2f(0, -0.05f));
+        graphics->MoveSprite("Zombie", sf::Vector2f(0, -0.05f));
         graphics->ChangeTexture("Zombie", "Walk Ani");
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        graphics->SetSpritePos("Zombie", sf::Vector2f(-0.05f, 0));
+        graphics->MoveSprite("Zombie", sf::Vector2f(-0.05f, 0));
         graphics->ChangeTexture("Zombie", "Walk Ani");
         graphics->FlipSprite("Zombie", -1);
 
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        graphics->SetSpritePos("Zombie", sf::Vector2f(0, 0.05f));
+        graphics->MoveSprite("Zombie", sf::Vector2f(0, 0.05f));
         graphics->ChangeTexture("Zombie", "Walk Ani");
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        graphics->SetSpritePos("Zombie", sf::Vector2f(0.05f, 0));
+        graphics->MoveSprite("Zombie", sf::Vector2f(0.05f, 0));
         graphics->ChangeTexture("Zombie", "Walk Ani");
         graphics->FlipSprite("Zombie", 1);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
         graphics->ChangeTexture("Zombie", "Dead Ani");
+    else
+        graphics->ChangeTexture("Zombie", "Idle Ani");
 
 }
 
@@ -109,17 +112,11 @@ int main()
     sf::Clock fpsTimer;
     fpsTimer.start();
 
-    MyRectangle* rect1 = new MyRectangle;
-    rect1->SetRectangle(5, 10, 5, 10);
-    MyRectangle* rect2 = new MyRectangle;
-    rect2->SetRectangle(4, 11, 4,11);
-    if (rect1->DoTheyIntersect(*rect2) == true)
-        std::cout << "they intersect" << std::endl;
-    else if(rect1->DoTheyIntersect(*rect2) == false)
-        std::cout << "they do not intersect" << std::endl;
-
    /* sf::Sprite sprite(attack);*/
 
+	MyRectangle rectangle;
+	rectangle.SetRectangle(50001, 5001, 5000, 5000);
+    
     Graphics* graphics = new Graphics;
     LoadTextures(graphics);
     graphics->CreateSprite("Zombie");
@@ -130,7 +127,6 @@ int main()
 
     graphics->CreateSprite("Greg");
     graphics->AddAnimationSet("Greg", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
-    graphics->ChangeTexture("Greg", "Idle Ani");
     
     // Clock required by ImGui
     sf::Clock uiDeltaClock;
@@ -217,6 +213,8 @@ int main()
         graphics->DrawSprite("Zombie", { 50,50 }, "Attack Ani", window);
         graphics->DrawSprite("Greg", { 300,0 }, "Idle Ani", window);
         graphics->UpdateSprite("Zombie", clock, graphics->GetRectangle("Greg"));
+        graphics->UpdateSprite("Greg", clock);
+        graphics->SetSpritePos("Greg", { 200,0 });
         // UI needs drawing last
         ImGui::SFML::Render(window);
         

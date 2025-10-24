@@ -25,10 +25,14 @@ private:
 	sf::Sprite* m_sprite;
 	sf::Vector2i m_intRectSize = sf::Vector2i(432, 521);
 public:
-	Sprite(sf::Texture* texture) { m_sprite = new sf::Sprite(*texture), m_rectangle = new MyRectangle; }
+	Sprite(sf::Texture* texture) { m_sprite = new sf::Sprite(*texture), m_sprite, m_rectangle = new MyRectangle; }
+	~Sprite() { delete m_sprite; delete m_rectangle; }
 	void AddAnimationSet(const std::string& name,const AnimationSetData& setData, sf::Texture* texture);
 	void DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, sf::RenderWindow& window);
 	void Update(sf::Clock& clock, const MyRectangle& rect);
+	void Update(sf::Clock& clock);
+	void UpdateRectangle();
+	void Move(const sf::Vector2f& distance);
 	void ChangeTexture(const std::string& textureName);
 	sf::Vector2f GetPos();
 	void SetPos(const sf::Vector2f& amount);
