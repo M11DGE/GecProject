@@ -64,9 +64,9 @@ void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock)
     m_spriteMap[spriteName]->Update(clock);
 }
 
-void Graphics::MoveSprite(const std::string& spriteName, const sf::Vector2f& distance)
+void Graphics::MoveSprite(const std::string& spriteName, const Direction& dir)
 {
-	m_spriteMap[spriteName]->Move(distance);
+	m_spriteMap[spriteName]->Move(dir);
 }
 
 void Graphics::ChangeTexture(const std::string& spriteName, const std::string& textureName)

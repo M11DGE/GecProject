@@ -1,15 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-enum class Side
-{
-	Top,
-	Bottom,
-	Left,
-	Right,
-	None
-};
-
 class MyRectangle
 {
 private:

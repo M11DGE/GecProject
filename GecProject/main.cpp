@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include "Graphics.h"
 #include "Rectangle.h"
+#include "Direction.h"
 #include <vector>
 
 void DefineGUI(); 
@@ -25,21 +26,21 @@ int frames = 0;
 void Inputs(Graphics* graphics) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        graphics->MoveSprite("Zombie", sf::Vector2f(0, -0.05f));
+        graphics->MoveSprite("Zombie", Direction::Up);
         graphics->ChangeTexture("Zombie", "Walk Ani");
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        graphics->MoveSprite("Zombie", sf::Vector2f(-0.05f, 0));
+        graphics->MoveSprite("Zombie", Direction::Left);
         graphics->ChangeTexture("Zombie", "Walk Ani");
         graphics->FlipSprite("Zombie", -1);
 
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        graphics->MoveSprite("Zombie", sf::Vector2f(0, 0.05f));
+        graphics->MoveSprite("Zombie", Direction::Down);
         graphics->ChangeTexture("Zombie", "Walk Ani");
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        graphics->MoveSprite("Zombie", sf::Vector2f(0.05f, 0));
+        graphics->MoveSprite("Zombie", Direction::Right);
         graphics->ChangeTexture("Zombie", "Walk Ani");
         graphics->FlipSprite("Zombie", 1);
     }
@@ -214,7 +215,7 @@ int main()
         graphics->DrawSprite("Greg", { 300,0 }, "Idle Ani", window);
         graphics->UpdateSprite("Zombie", clock, graphics->GetRectangle("Greg"));
         graphics->UpdateSprite("Greg", clock);
-        graphics->SetSpritePos("Greg", { 200,0 });
+        graphics->SetSpritePos("Greg", { 200,200 });
         // UI needs drawing last
         ImGui::SFML::Render(window);
         

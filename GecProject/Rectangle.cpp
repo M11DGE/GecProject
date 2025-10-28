@@ -32,8 +32,6 @@ bool MyRectangle::DoTheyIntersect(const MyRectangle& rectangle) const
 		return false;
 	if (m_bottom < rectangle.m_top)
 		return false;
-
-	std::cout << "colission" << std::endl;
 	return true;
 }
 

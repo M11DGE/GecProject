@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include"AnimationSetData.h"
 #include "Rectangle.h"
+#include "Direction.h"
 
 class Sprite;
 class Graphics
@@ -18,7 +19,7 @@ public:
 	void DrawSprite(const std::string& spriteName, const sf::Vector2f& pos, const std::string& spriteAnimationSet, sf::RenderWindow& window);
 	void UpdateSprite(const std::string& spriteName, sf::Clock& clock, const MyRectangle& rect );
 	void UpdateSprite(const std::string& spriteName, sf::Clock& clock);
-	void MoveSprite(const std::string& spriteName, const sf::Vector2f& distance);
+	void MoveSprite(const std::string& spriteName, const Direction& dir);
 	void ChangeTexture(const std::string& spriteName, const std::string& textureName);
 	sf::Vector2f GetSpritePos(const std::string& spriteName);
 	void SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance);
