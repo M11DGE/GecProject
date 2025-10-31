@@ -9,11 +9,10 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Graphics.h"
+#include "World.h"
 #include "Rectangle.h"
 #include "Direction.h"
 #include <vector>
-
-void DefineGUI(); 
 
 float x = 50;
 float y = 50;
@@ -51,18 +50,6 @@ void Inputs(Graphics* graphics) {
 
 }
 
-int LoadTextures(Graphics* graphics)
-{
-    if (!graphics->LoadTexture("Attack Ani", "Data/Textures/MaleZombie/attack_combined.png"))
-        return -1;
-    if (!graphics->LoadTexture("Idle Ani", "Data/Textures/MaleZombie/idle_combined.png"))
-        return -1;
-    if (!graphics->LoadTexture("Dead Ani", "Data/Textures/MaleZombie/dead_combined.png"))
-        return -1;
-    if (!graphics->LoadTexture("Walk Ani", "Data/Textures/MaleZombie/walk_combined.png"))
-        return -1;
-}
-
 int main()
 {
     // Redirect cout to the Visual Studio output pane
@@ -76,158 +63,8 @@ int main()
     // Turn on memory leak checking
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    // Create the SFML window
-    sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "GEC Start Project");
-
-    // Set up ImGui (the UI library)
-    if (!ImGui::SFML::Init(window))
-        return -1;
-
-   /*sf::Texture attack("Data/Textures/MaleZombie/attack_combined.png");
-    if (!attack.loadFromFile("Data/Textures/MaleZombie/attack_combined.png"))
-    {
-        std::cout << "could not load texture" << std::endl;
-        return -1;
-    }
-    sf::Texture dead("Data/Textures/MaleZombie/dead_combined.png");
-    if (!dead.loadFromFile("Data/Textures/MaleZombie/dead_combined.png"))
-    {
-        std::cout << "could not load texture" << std::endl;
-        return -1;
-    }
-    sf::Texture idle("Data/Textures/MaleZombie/idle_combined.png");
-    if (!idle.loadFromFile("Data/Textures/MaleZombie/idle_combined.png"))
-    {
-        std::cout << "could not load texture" << std::endl;
-        return -1;
-    }
-    sf::Texture walk("Data/Textures/MaleZombie/walk_combined.png");
-    if (!walk.loadFromFile("Data/Textures/MaleZombie/walk_combined.png"))
-    {
-        std::cout << "could not load texture" << std::endl;
-        return -1;
-    }
-    std::unordered_map<int, sf::Texture> zombieTextures = { {1, attack},{2,dead},{3,idle},{4,walk} };*/
-
-    sf::Clock clock;
-    sf::Clock fpsTimer;
-    fpsTimer.start();
-
-   /* sf::Sprite sprite(attack);*/
-
-	MyRectangle rectangle;
-	rectangle.SetRectangle(50001, 5001, 5000, 5000);
-    
-    Graphics* graphics = new Graphics;
-    LoadTextures(graphics);
-    graphics->CreateSprite("Zombie");
-    graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
-    graphics->AddAnimationSet("Zombie", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
-    graphics->AddAnimationSet("Zombie", "Dead Ani", AnimationSetData("Dead Ani", 12, 631, 528));
-    graphics->AddAnimationSet("Zombie", "Walk Ani", AnimationSetData("Walk Ani", 10, 432, 521));
-
-    graphics->CreateSprite("Greg");
-    graphics->AddAnimationSet("Greg", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
-    
-    // Clock required by ImGui
-    sf::Clock uiDeltaClock;
-  
-    while (window.isOpen())
-    {
-        // Process events
-        while (const std::optional event = window.pollEvent())
-        {
-            // Feed ImGui
-            ImGui::SFML::ProcessEvent(window, event.value());
-
-            // User clicked on window close X
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-
-        // ImGui must be updated each frame
-        ImGui::SFML::Update(window, uiDeltaClock.restart());
-
-        // The UI gets defined each time
-        DefineGUI();
-
-        //sprite.setScale({ scale, scale });
-     
-       /* switch (state)
-        {
-        case 0:
-            sprite.setTexture(zombieTextures[1]);
-            sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
-            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-                scale++;
-                clock.restart();
-                if (scale > 7)
-                    scale = 0;
-            }
-            break;
-        case 1:
-            sprite.setTexture(zombieTextures[2]);
-            sprite.setTextureRect(sf::IntRect({ 0,scale * 528 }, { 631,528 }));
-            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-                scale++;
-                clock.restart();
-                if (scale > 11)
-                    scale = 0;
-            }
-            break;
-        case 2:
-            sprite.setTexture(zombieTextures[3]);
-            sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
-            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-                scale++;
-                clock.restart();
-                if (scale > 14)
-                    scale = 0;
-            }
-            break;
-        case 3:
-            sprite.setTexture(zombieTextures[4]);
-            sprite.setTextureRect(sf::IntRect({ 0,scale * 521 }, { 432,521 }));
-            if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-                scale++;
-                clock.restart();
-                if (scale > 9)
-                    scale = 0;
-            }
-            break;
-        }
-        frames ++;
-        if (fpsTimer.getElapsedTime().asSeconds() >= 1) {
-            fps = frames;
-            std::cout << fps << std::endl;
-            frames = 0;
-            fpsTimer.restart();
-        }*/
-        
-        Inputs(graphics);
-
-        //Clear the window
-        window.clear();
-       
-        // Draw the shape
-        //window.draw(sprite);
-        graphics->DrawSprite("Zombie", { 50,50 }, "Attack Ani", window);
-        graphics->DrawSprite("Greg", { 300,0 }, "Idle Ani", window);
-        graphics->UpdateSprite("Zombie", clock, graphics->GetRectangle("Greg"));
-        graphics->UpdateSprite("Greg", clock);
-        graphics->SetSpritePos("Greg", { 200,200 });
-        // UI needs drawing last
-        ImGui::SFML::Render(window);
-        
-
-        window.display();
-    }
-
-    std::cout << "Finished!" << std::endl;
-
-    delete graphics;
-
-	ImGui::SFML::Shutdown();
+    World* world = new World;
+    world->Run();
 
     return 0;
 }
@@ -236,30 +73,3 @@ int main()
     Use IMGUI for a simple on screen GUI
     See: https://github.com/ocornut/imgui/wiki/
 */
-void DefineGUI()
-{
-    // Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    ImGui::Begin("GEC");				// Create a window called "3GP" and append into it.
-
-    ImGui::Text("Some Text.");	      	// Display some text (you can use a format strings too)	
-
-    bool result = ImGui::Button("Change animation");      // Buttons return true when clicked (most widgets return true when edited/activated)
-    if (result == true) {
-        state++;
-        scale = 0;
-        if (state > 3)
-            state = 0;
-    }
-
- //   ImGui::Checkbox("Wireframe", &m_wireframe);	// A checkbox linked to a member variable
-
-  //  ImGui::Checkbox("Cull Face", &m_cullFace);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    std::string fpsText = "fps is " + std::to_string(fps);
-    ImGui::Text(fpsText.c_str());
-
-    ImGui::End();
-}
