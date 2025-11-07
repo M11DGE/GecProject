@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "RedirectCout.h"
 #include "Graphics.h"
 #include "Rectangle.h"
 #include "Direction.h"

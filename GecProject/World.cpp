@@ -21,7 +21,7 @@ bool World::LoadTextures()
 
 void World::CreateSprites()
 {
-    Player* newPlayer = new Player;
+    Player* newPlayer = new Player("Player");
     m_entityVec.push_back(newPlayer);
 }
 
@@ -67,7 +67,7 @@ int World::Run()
         //Clear the window
         window.clear();
         for (auto entity : m_entityVec)
-            entity->Update();
+            entity->Update(m_graphics);
 
 
         // UI needs drawing last
