@@ -9,9 +9,10 @@ Player::Player(std::string& entName)
 	m_name = entName;
 }
 
-void Player::Update(Graphics* graphics)
+void Player::Update(sf::RenderWindow& window, Graphics* graphics)
 {
 	Inputs(graphics);
+	Draw(graphics, window);
 }
 
 void Player::Draw(Graphics* graphics, sf::RenderWindow& window)
@@ -41,9 +42,4 @@ void Player::Inputs(Graphics* graphics)
 		m_currentDir = Direction::Right;
 		graphics->MoveSprite(m_name, m_currentDir);
 	}
-}
-
-void Player::Move(Graphics* graphics)
-{
- 
 }

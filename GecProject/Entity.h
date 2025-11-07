@@ -16,7 +16,7 @@ protected:
 	Direction m_currentDir{ Direction::None };
 
 public:
-	virtual void Update(Graphics* graphics) = 0;
+	virtual void Update(sf::RenderWindow& window, Graphics* graphics) = 0;
 	virtual void Draw(Graphics* graphics, sf::RenderWindow& window) = 0;
 };
 
