@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Player.h"
+#include "Enemy.h"
 
 bool World::LoadTextures()
 {
@@ -11,25 +12,26 @@ bool World::LoadTextures()
         return false;
     if (!m_graphics->LoadTexture("Walk Ani", "Data/Textures/MaleZombie/walk_combined.png"))
         return false;
-    m_graphics->CreateSprite("Zombie");
-    m_graphics->AddAnimationSet("Zombie", "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
-    m_graphics->AddAnimationSet("Zombie", "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
-    m_graphics->AddAnimationSet("Zombie", "Dead Ani", AnimationSetData("Dead Ani", 12, 631, 528));
-    m_graphics->AddAnimationSet("Zombie", "Walk Ani", AnimationSetData("Walk Ani", 10, 432, 521));
     return true;
 }
 
 void World::CreateSprites()
 {
-    Player* newPlayer = new Player("Player");
+    Player* newPlayer = new Player("Player", m_graphics);
     m_entityVec.push_back(newPlayer);
+	Enemy* newEnemy = new Enemy("Enemy", m_graphics);
+	m_entityVec.push_back(newEnemy);
 }
 
 int World::Run()
 {
     sf::Clock fpsTimer;
     fpsTimer.start();
+	m_clock.start();
     int frame = 0;
+
+    LoadTextures();
+	CreateSprites();
 
     sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "GEC Start Project");
     if (!ImGui::SFML::Init(window))
@@ -67,7 +69,8 @@ int World::Run()
         //Clear the window
         window.clear();
         for (auto entity : m_entityVec)
-            entity->Update(m_graphics);
+			for (auto entity2 : m_entityVec)
+            entity->Update(window, m_graphics, m_clock, entity2->GetRectangle(m_graphics));
 
 
         // UI needs drawing last

@@ -40,5 +40,6 @@ public:
 	void SetPos(const sf::Vector2f& amount);
 	void Flip(const int& flip);
 	MyRectangle GetRect();
+	std::string GetCurrentTex() { return m_currentTex; }
 };
 

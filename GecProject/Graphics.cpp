@@ -18,9 +18,9 @@ bool Graphics::LoadTexture(const std::string& name, const std::string& filename)
     std::cout << "loaded" << name << std::endl;
     return true;
 }
-sf::Texture Graphics::GetTexture(const std::string& name)
+std::string Graphics::GetTexture(const std::string& name)
 {
-    return *m_textureMap[name];
+    return m_spriteMap[name]->GetCurrentTex();
 }
 
 bool Graphics::AddAnimationSet(const std::string& spriteName, const std::string& setName, const AnimationSetData& setData)

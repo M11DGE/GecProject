@@ -12,7 +12,7 @@ class World
 {
 private:
 	Graphics* m_graphics;
-	sf::Clock clock;
+	sf::Clock m_clock;
 	std::vector<Entity*> m_entityVec;
 	int m_fps;
 

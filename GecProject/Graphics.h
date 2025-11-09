@@ -13,7 +13,7 @@ protected:
 	std::unordered_map<std::string, sf::Texture*> m_textureMap;
 public:
 	bool LoadTexture(const std::string& name, const std::string& filename);
-	sf::Texture GetTexture(const std::string& name);
+	std::string GetTexture(const std::string& name);
 	bool AddAnimationSet(const std::string& spriteName, const std::string& setName, const AnimationSetData& setData );
 	bool CreateSprite(const std::string& name);
 	void DrawSprite(const std::string& spriteName, const sf::Vector2f& pos, const std::string& spriteAnimationSet, sf::RenderWindow& window);
