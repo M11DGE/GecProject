@@ -17,44 +17,9 @@ void Sprite::DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, sf:
 		window.draw(m_rectangle->GetHitbox());
 }
 
-void Sprite::Update(sf::Clock& clock, const MyRectangle& rect)
-{
-    m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * 521 }, { m_intRectSize }));
-    if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-        m_frameNum++;
-        clock.restart();
-        if (m_frameNum > (m_AnimationSet[m_currentTex].setData.m_NumOfFrames - 1))
-            m_frameNum = 0;
-    }
-
-    UpdateRectangle();
-    if (m_rectangle->DoTheyIntersect(rect) == true)
-        m_collisionDir = m_currentDir;
-    else
-        m_collisionDir = Direction::None;
-    if (m_collisionDir == m_currentDir)
-    {
-        switch (m_currentDir)
-        {
-        case Direction::Up:
-            m_sprite->move({ 0,0.2 });
-            break;
-        case Direction::Down:
-            m_sprite->move({ 0,-0.2 });
-            break;
-        case Direction::Left:
-            m_sprite->move({ 0.2,0 });
-            break;
-        case Direction::Right:
-            m_sprite->move({ -0.2,0 });
-            break;
-        }
-    }
-}
-
 void Sprite::Update(sf::Clock& clock)
 {
-    m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * 521 }, { m_intRectSize }));
+    m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * m_AnimationSet[m_currentTex].setData.m_XAndY.y }, { m_intRectSize }));
     if (clock.getElapsedTime().asSeconds() >= 0.07f) {
         m_frameNum++;
         clock.restart();
@@ -77,6 +42,23 @@ void Sprite::UpdateRectangle()
         m_rectangle->SetRectangle(left, (left + width), top, top + height);
         if (m_sprite->getScale().x < 0)
         m_rectangle->SetRectangle(left - flipOffset, (left + width) - flipOffset, top, (top + height));
+}
+
+bool Sprite::Collision(const MyRectangle& rect)
+{
+    if (m_rectangle->DoTheyIntersect(rect) == true)
+    {
+        m_collisionDir = m_currentDir;
+        return true;
+    }
+    else
+        m_collisionDir = Direction::None;
+	return false;
+}
+
+std::string Sprite::GetSpriteName()
+{
+    return m_name;
 }
 
 void Sprite::Move(const Direction& dir)
@@ -105,16 +87,16 @@ void Sprite::Move(const Direction& dir)
         switch (m_currentDir)
         {
         case Direction::Up:
-            m_sprite->move({ 0,0.2 });
+            m_sprite->move({ 0,0.5 });
             break;
         case Direction::Down:
-            m_sprite->move({ 0,-0.2 });
+            m_sprite->move({ 0,-0.5 });
             break;
         case Direction::Left:
-            m_sprite->move({ 0.2,0 });
+            m_sprite->move({ 0.5,0 });
             break;
         case Direction::Right:
-            m_sprite->move({ -0.2,0 });
+            m_sprite->move({ -0.5,0 });
             break;
         }
     }
@@ -139,12 +121,13 @@ void Sprite::SetPos(const sf::Vector2f& amount)
 
 void Sprite::Flip(const int& flip)
 {
+	float scale = m_sprite->getScale().y;
     if (m_flip == flip)
         return;
     if (m_flip == 1)
     {
         m_sprite->setScale({ -0.2, 0.2 });
-        m_sprite->move(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * 0.2f, 0));
+        m_sprite->move(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * scale, 0));
         m_flip = -1;
         m_rectangle->Move({ 421, 0 });
 
@@ -153,7 +136,7 @@ void Sprite::Flip(const int& flip)
     else if (m_flip == -1)
     {
         m_sprite->setScale({ 0.2, 0.2 });
-        m_sprite->move(-(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * 0.2f, 0)));
+        m_sprite->move(-(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * scale, 0)));
         m_flip = 1;
         m_rectangle->Move({-421, 0});
         return;

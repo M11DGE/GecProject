@@ -69,8 +69,14 @@ int World::Run()
         //Clear the window
         window.clear();
         for (auto entity : m_entityVec)
-			for (auto entity2 : m_entityVec)
-            entity->Update(window, m_graphics, m_clock, entity2->GetRectangle(m_graphics));
+            entity->Update(window, m_graphics);
+
+
+        for (auto entity : m_entityVec)
+        {
+            for (auto entity2 : m_entityVec)
+				entity->CheckCollision(m_graphics, entity2->GetName(), entity2->GetRectangle(m_graphics));
+        }
 
 
         // UI needs drawing last
