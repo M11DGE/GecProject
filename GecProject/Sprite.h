@@ -20,6 +20,7 @@ private:
 	std::unordered_map<std::string, AnimationSet> m_AnimationSet;
 	int m_frameNum = 0;
 	int m_flip = 1;
+	bool m_midAnimation = false;
 	std::string m_name;
 	Direction m_currentDir = Direction::Right;
 	Direction m_collisionDir = Direction::None;
@@ -31,13 +32,13 @@ public:
 	Sprite(sf::Texture* texture, std::string name) { m_sprite = new sf::Sprite(*texture), m_sprite->setScale({0.2,0.2}), m_name = name, m_sprite, m_rectangle = new MyRectangle; }
 	~Sprite() { delete m_sprite; delete m_rectangle; }
 	void AddAnimationSet(const std::string& name,const AnimationSetData& setData, sf::Texture* texture);
-	void DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, sf::RenderWindow& window);
-	void Update(sf::Clock& clock);
+	void DrawSprite(sf::RenderWindow& window);
+	void Update(sf::Clock& clock, sf::RenderWindow& window);
 	void UpdateRectangle();
 	bool Collision(const MyRectangle& rect);
 	std::string GetSpriteName();
 	void Move(const Direction& dir);
-	void ChangeTexture(const std::string& textureName);
+	void ChangeTexture(const std::string& textureName, const bool& midAnimation);
 	sf::Vector2f GetPos();
 	void SetPos(const sf::Vector2f& amount);
 	void Flip(const int& flip);

@@ -11,22 +11,23 @@ void Sprite::AddAnimationSet(const std::string& name, const AnimationSetData& se
     std::cout << "loaded" << name << std::endl;
 }
 
-void Sprite::DrawSprite(sf::Vector2f, const std::string& spriteAnimationSet, sf::RenderWindow& window)
+void Sprite::DrawSprite(sf::RenderWindow& window)
 {
 	    window.draw(*m_sprite);
 		window.draw(m_rectangle->GetHitbox());
 }
 
-void Sprite::Update(sf::Clock& clock)
+void Sprite::Update(sf::Clock& clock, sf::RenderWindow& window)
 {
     m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * m_AnimationSet[m_currentTex].setData.m_XAndY.y }, { m_intRectSize }));
-    if (clock.getElapsedTime().asSeconds() >= 0.07f) {
-        m_frameNum++;
-        clock.restart();
-        if (m_frameNum > (m_AnimationSet[m_currentTex].setData.m_NumOfFrames - 1))
-            m_frameNum = 0;
-    }
-
+        if (clock.getElapsedTime().asSeconds() >= 0.07f) {
+            m_frameNum++;
+            clock.restart();
+            if (m_frameNum > (m_AnimationSet[m_currentTex].setData.m_NumOfFrames - 1))
+                m_frameNum = 0;
+        }
+        if (m_midAnimation == true && m_frameNum == 0)
+            m_midAnimation = false;
     UpdateRectangle();
 }
 
@@ -64,25 +65,7 @@ std::string Sprite::GetSpriteName()
 void Sprite::Move(const Direction& dir)
 {
     m_currentDir = dir;
-    if (m_collisionDir != m_currentDir)
-    {
-        switch (m_currentDir)
-        {
-        case Direction::Up:
-            m_sprite->move({ 0,-0.05 });
-            break;
-        case Direction::Down:
-            m_sprite->move({ 0,0.05 });
-            break;
-        case Direction::Left:
-            m_sprite->move({ -0.05,0 });
-            break;
-        case Direction::Right:
-            m_sprite->move({ 0.05,0 });
-            break;
-        }
-    }
-    else if (m_collisionDir == m_currentDir)
+    if (m_collisionDir == m_currentDir)
     {
         switch (m_currentDir)
         {
@@ -100,13 +83,45 @@ void Sprite::Move(const Direction& dir)
             break;
         }
     }
+    else if (m_collisionDir != m_currentDir)
+    {
+        switch (m_currentDir)
+        {
+        case Direction::Up:
+            m_sprite->move({ 0,-0.05 });
+            break;
+        case Direction::Down:
+            m_sprite->move({ 0,0.05 });
+            break;
+        case Direction::Left:
+            m_sprite->move({ -0.05,0 });
+			Flip(-1);
+            break;
+        case Direction::Right:
+            m_sprite->move({ 0.05,0 });
+            Flip(1);
+            break;
+        }
+    }
+    
 }
 
-void Sprite::ChangeTexture(const std::string& textureName)
+void Sprite::ChangeTexture(const std::string& textureName, const bool& midAnimation)
 {
-    m_sprite->setTexture(*m_AnimationSet[textureName].sfmlTexture);
-    m_intRectSize = m_AnimationSet[textureName].setData.m_XAndY;
-    m_currentTex = textureName;
+    if (m_midAnimation == false)
+    {
+        m_sprite->setTexture(*m_AnimationSet[textureName].sfmlTexture);
+        m_intRectSize = m_AnimationSet[textureName].setData.m_XAndY;
+        m_currentTex = textureName;
+        m_midAnimation = midAnimation;
+        if (m_currentTex != textureName)
+            m_frameNum = 0;
+        return;
+    }
+    else
+    {
+        return;
+    }
 }
 
 sf::Vector2f Sprite::GetPos()

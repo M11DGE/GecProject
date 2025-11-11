@@ -17,7 +17,7 @@ Player::Player(const std::string& entName, Graphics* graphics)
 void Player::Update(sf::RenderWindow& window, Graphics* graphics)
 {
 	Inputs(graphics);
-	graphics->UpdateSprite(m_name, m_clock);
+	graphics->UpdateSprite(m_name, m_clock, window);
 	Draw(graphics, window);
 }
 
@@ -29,7 +29,7 @@ void Player::CheckCollision(Graphics* graphics, const std::string& otherObjectNa
 
 void Player::Draw(Graphics* graphics, sf::RenderWindow& window)
 {
-	graphics->DrawSprite(m_name, m_pos, m_currentAni, window);
+	graphics->DrawSprite(m_name, window);
 }
 
 void Player::LoadTextures(Graphics* graphics)

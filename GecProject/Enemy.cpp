@@ -15,7 +15,7 @@ Enemy::Enemy(const std::string& entName, Graphics* graphics)
 
 void Enemy::Update(sf::RenderWindow& window, Graphics* graphics)
 {
-	graphics->UpdateSprite(m_name, m_clock);
+	graphics->UpdateSprite(m_name, m_clock, window);
 	Draw(graphics, window);
 }
 
@@ -25,7 +25,7 @@ void Enemy::CheckCollision(Graphics* graphics, const std::string& otherObjectNam
 	{
 		if (graphics->CheckCollision(m_name, rect) == true && otherObjectName == "Player")
 		{
-			graphics->ChangeTexture(m_name, "Attack Ani");
+			graphics->ChangeTexture(m_name, "Attack Ani", true);
 			std::cout << otherObjectName << std::endl;
 		}
 	}
@@ -35,7 +35,7 @@ void Enemy::CheckCollision(Graphics* graphics, const std::string& otherObjectNam
 
 void Enemy::Draw(Graphics* graphics, sf::RenderWindow& window)
 {
-	graphics->DrawSprite(m_name, m_pos, m_currentAni, window);
+	graphics->DrawSprite(m_name, window);
 }
 
 void Enemy::LoadTextures(Graphics* graphics)

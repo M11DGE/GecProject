@@ -52,16 +52,16 @@ bool Graphics::CreateSprite(const std::string& name)
     m_spriteMap[name] = newSprite;
     return false;
 }
-void Graphics::DrawSprite(const std::string& spriteName,const sf::Vector2f& pos, const std::string& spriteAnimationSet, sf::RenderWindow& window)
+void Graphics::DrawSprite(const std::string& spriteName, sf::RenderWindow& window)
 {
     if (m_spriteMap.find(spriteName) == m_spriteMap.end())
         return;
-    m_spriteMap[spriteName]->DrawSprite(pos, spriteAnimationSet, window);
+    m_spriteMap[spriteName]->DrawSprite(window);
 }
 
-void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock)
+void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock, sf::RenderWindow& window)
 {
-    m_spriteMap[spriteName]->Update(clock);
+    m_spriteMap[spriteName]->Update(clock, window);
 }
 
 void Graphics::MoveSprite(const std::string& spriteName, const Direction& dir)
@@ -69,9 +69,9 @@ void Graphics::MoveSprite(const std::string& spriteName, const Direction& dir)
 	m_spriteMap[spriteName]->Move(dir);
 }
 
-void Graphics::ChangeTexture(const std::string& spriteName, const std::string& textureName)
+void Graphics::ChangeTexture(const std::string& spriteName, const std::string& textureName, const bool& midAnimation)
 {
-    m_spriteMap[spriteName]->ChangeTexture(textureName);
+    m_spriteMap[spriteName]->ChangeTexture(textureName, midAnimation);
 }
 
 bool Graphics::CheckCollision(const std::string& spriteName, const MyRectangle& rect)
