@@ -2,7 +2,6 @@
 #include "Entity.h"
 #include "Rectangle.h"
 #include "Direction.h"
-#include "Rectangle.h"
 #include <iostream>
 
 class Graphics;

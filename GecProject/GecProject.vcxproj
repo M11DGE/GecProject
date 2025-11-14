@@ -140,6 +140,7 @@
     <ClCompile Include="AnimationSetData.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="IMGUI\imgui-SFML.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ExternalHeaders.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rectangle.h" />
