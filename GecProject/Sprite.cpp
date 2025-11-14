@@ -14,7 +14,7 @@ void Sprite::AddAnimationSet(const std::string& name, const AnimationSetData& se
 void Sprite::DrawSprite(sf::RenderWindow& window)
 {
 	    window.draw(*m_sprite);
-		window.draw(m_rectangle->GetHitbox());
+		/*window.draw(m_rectangle->GetHitbox());*/
 }
 
 void Sprite::Update(sf::Clock& clock, sf::RenderWindow& window)
@@ -28,6 +28,12 @@ void Sprite::Update(sf::Clock& clock, sf::RenderWindow& window)
         }
         if (m_midAnimation == true && m_frameNum == 0)
             m_midAnimation = false;
+    UpdateRectangle();
+}
+
+void Sprite::Update()
+{
+    m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * m_AnimationSet[m_currentTex].setData.m_XAndY.y }, { m_intRectSize }));
     UpdateRectangle();
 }
 
@@ -134,6 +140,11 @@ void Sprite::SetPos(const sf::Vector2f& amount)
     m_sprite->setPosition(amount);
 }
 
+void Sprite::SetScale(const sf::Vector2f& scale)
+{
+	m_sprite->setScale(scale);
+}
+
 void Sprite::Flip(const int& flip)
 {
 	float scale = m_sprite->getScale().y;
@@ -141,7 +152,7 @@ void Sprite::Flip(const int& flip)
         return;
     if (m_flip == 1)
     {
-        m_sprite->setScale({ -0.2, 0.2 });
+        m_sprite->setScale({-(m_sprite->getScale().x), m_sprite->getScale().y});
         m_sprite->move(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * scale, 0));
         m_flip = -1;
         m_rectangle->Move({ 421, 0 });
@@ -150,7 +161,7 @@ void Sprite::Flip(const int& flip)
     }
     else if (m_flip == -1)
     {
-        m_sprite->setScale({ 0.2, 0.2 });
+        m_sprite->setScale({-(m_sprite->getScale().x), m_sprite->getScale().y});
         m_sprite->move(-(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * scale, 0)));
         m_flip = 1;
         m_rectangle->Move({-421, 0});

@@ -64,6 +64,11 @@ void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock, sf:
     m_spriteMap[spriteName]->Update(clock, window);
 }
 
+void Graphics::UpdateSprite(const std::string& spriteName)
+{
+    m_spriteMap[spriteName]->Update();
+}
+
 void Graphics::MoveSprite(const std::string& spriteName, const Direction& dir)
 {
 	m_spriteMap[spriteName]->Move(dir);
@@ -87,6 +92,11 @@ sf::Vector2f Graphics::GetSpritePos(const std::string& spriteName)
 void Graphics::SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance)
 {
     m_spriteMap[spriteName]->SetPos(distance);
+}
+
+void Graphics::SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale)
+{
+	m_spriteMap[spriteName]->SetScale(scale);
 }
 
 void Graphics::FlipSprite(const std::string& spriteName,const int& flip)

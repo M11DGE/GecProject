@@ -11,6 +11,7 @@ Player::Player(const std::string& entName, Graphics* graphics)
 	m_clock.start();
 	graphics->CreateSprite(m_name);
 	graphics->SetSpritePos(m_name, m_pos);
+	graphics->SetSpriteScale(m_name, { 0.2f,0.2f });
 	LoadTextures(graphics);
 }
 

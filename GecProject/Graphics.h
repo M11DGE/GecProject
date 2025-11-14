@@ -19,11 +19,13 @@ public:
 	bool CreateSprite(const std::string& name);
 	void DrawSprite(const std::string& spriteName, sf::RenderWindow& window);
 	void UpdateSprite(const std::string& spriteName, sf::Clock& clock, sf::RenderWindow& window);
+	void UpdateSprite(const std::string& spriteName);
 	void MoveSprite(const std::string& spriteName, const Direction& dir);
 	void ChangeTexture(const std::string& spriteName, const std::string& textureName, const bool& midAnimation = false);
 	bool CheckCollision(const std::string& spriteName, const MyRectangle& rect);
 	sf::Vector2f GetSpritePos(const std::string& spriteName);
 	void SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance);
+	void SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale);
 	void FlipSprite(const std::string& spriteName, const int& flip);
 	MyRectangle GetRectangle(const std::string& spriteName);
 };

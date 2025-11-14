@@ -1,6 +1,7 @@
 #include "World.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Floor.h"
 
 bool World::LoadTextures()
 {
@@ -12,6 +13,14 @@ bool World::LoadTextures()
         return false;
     if (!m_graphics->LoadTexture("Walk Ani", "Data/Textures/MaleZombie/walk_combined.png"))
         return false;
+    if (!m_graphics->LoadTexture("FloorTR", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_04.png"))
+		return false;
+	if (!m_graphics->LoadTexture("FloorTM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_05.png"))
+		return false;
+	if (!m_graphics->LoadTexture("FloorTL", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_06.png"))
+		return false;
+    if (!m_graphics->LoadTexture("FloorM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_14.png"))
+        return false;
     return true;
 }
 
@@ -21,6 +30,13 @@ void World::CreateSprites()
     m_entityVec.push_back(newPlayer);
 	Enemy* newEnemy = new Enemy("Enemy", m_graphics);
 	m_entityVec.push_back(newEnemy);
+	Floor* newFloor = new Floor("Floor1", { 0,400 }, m_graphics, "FloorTR");
+	m_entityVec.push_back(newFloor);
+	Floor* newFloor2 = new Floor("Floor2", { 32,400 }, m_graphics, "FloorTM");
+	m_entityVec.push_back(newFloor2);
+	Floor* newFloor3 = new Floor("Floor3", { 64,400 }, m_graphics, "FloorTL");
+	m_entityVec.push_back(newFloor3);
+	Floor* newFloor4 = new Floor("Floo4", { 96,400 }, m_graphics, "FloorM");
 }
 
 int World::Run()

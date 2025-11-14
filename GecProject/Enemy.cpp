@@ -9,6 +9,7 @@ Enemy::Enemy(const std::string& entName, Graphics* graphics)
 	m_currentAni = "Idle Ani";
 	graphics->CreateSprite(m_name);
 	graphics->SetSpritePos(m_name, m_pos);
+	graphics->SetSpriteScale(m_name, { 0.2f,0.2f });
 	LoadTextures(graphics);
 	graphics->ChangeTexture(m_name, "Idle Ani");
 }
