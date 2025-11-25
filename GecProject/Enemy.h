@@ -5,6 +5,7 @@ class Enemy :
 {
     private:
 		std::string m_currentAni;
+        sf::Clock m_clock;
 public:
         Enemy(const std::string& entName, Graphics* graphics);
         virtual void Update(sf::RenderWindow& window, Graphics* graphics)override;

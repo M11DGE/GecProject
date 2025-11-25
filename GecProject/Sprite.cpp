@@ -14,7 +14,7 @@ void Sprite::AddAnimationSet(const std::string& name, const AnimationSetData& se
 void Sprite::DrawSprite(sf::RenderWindow& window)
 {
 	    window.draw(*m_sprite);
-		/*window.draw(m_rectangle->GetHitbox());*/
+		window.draw(m_rectangle->GetHitbox());
 }
 
 void Sprite::Update(sf::Clock& clock, sf::RenderWindow& window)
@@ -53,14 +53,7 @@ void Sprite::UpdateRectangle()
 
 bool Sprite::Collision(const MyRectangle& rect)
 {
-    if (m_rectangle->DoTheyIntersect(rect) == true)
-    {
-        m_collisionDir = m_currentDir;
-        return true;
-    }
-    else
-        m_collisionDir = Direction::None;
-	return false;
+    return m_rectangle->DoTheyIntersect(rect);
 }
 
 std::string Sprite::GetSpriteName()
@@ -82,10 +75,10 @@ void Sprite::Move(const Direction& dir)
             m_sprite->move({ 0,-0.5 });
             break;
         case Direction::Left:
-            m_sprite->move({ 0.5,0 });
+            m_sprite->move({ 1.25,0 });
             break;
         case Direction::Right:
-            m_sprite->move({ -0.5,0 });
+            m_sprite->move({ -1.25,0 });
             break;
         }
     }
@@ -138,6 +131,14 @@ sf::Vector2f Sprite::GetPos()
 void Sprite::SetPos(const sf::Vector2f& amount)
 {
     m_sprite->setPosition(amount);
+}
+
+bool Sprite::IsFacingRight()
+{
+    if (m_sprite->getScale().x > 0)
+        return true;
+    else
+		return false;
 }
 
 void Sprite::SetScale(const sf::Vector2f& scale)

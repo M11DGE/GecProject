@@ -94,6 +94,11 @@ void Graphics::SetSpritePos(const std::string& spriteName, const sf::Vector2f& d
     m_spriteMap[spriteName]->SetPos(distance);
 }
 
+bool Graphics::IsSpriteFacingRight(const std::string& spriteName)
+{
+    if
+}
+
 void Graphics::SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale)
 {
 	m_spriteMap[spriteName]->SetScale(scale);

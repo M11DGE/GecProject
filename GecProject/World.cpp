@@ -13,11 +13,11 @@ bool World::LoadTextures()
         return false;
     if (!m_graphics->LoadTexture("Walk Ani", "Data/Textures/MaleZombie/walk_combined.png"))
         return false;
-    if (!m_graphics->LoadTexture("FloorTR", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_04.png"))
+    if (!m_graphics->LoadTexture("FloorTL", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_04.png"))
 		return false;
 	if (!m_graphics->LoadTexture("FloorTM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_05.png"))
 		return false;
-	if (!m_graphics->LoadTexture("FloorTL", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_06.png"))
+	if (!m_graphics->LoadTexture("FloorTR", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_06.png"))
 		return false;
     if (!m_graphics->LoadTexture("FloorM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_14.png"))
         return false;
@@ -30,13 +30,22 @@ void World::CreateSprites()
     m_entityVec.push_back(newPlayer);
 	Enemy* newEnemy = new Enemy("Enemy", m_graphics);
 	m_entityVec.push_back(newEnemy);
-	Floor* newFloor = new Floor("Floor1", { 0,400 }, m_graphics, "FloorTR");
+	Floor* newFloor = new Floor("Floor1", { 0,400 }, m_graphics, "FloorTL");
 	m_entityVec.push_back(newFloor);
 	Floor* newFloor2 = new Floor("Floor2", { 32,400 }, m_graphics, "FloorTM");
 	m_entityVec.push_back(newFloor2);
-	Floor* newFloor3 = new Floor("Floor3", { 64,400 }, m_graphics, "FloorTL");
+	Floor* newFloor3 = new Floor("Floor3", { 64,400 }, m_graphics, "FloorTR");
 	m_entityVec.push_back(newFloor3);
-	Floor* newFloor4 = new Floor("Floo4", { 96,400 }, m_graphics, "FloorM");
+	Floor* newFloor4 = new Floor("Floor4", { 100,400 }, m_graphics, "FloorM");
+	m_entityVec.push_back(newFloor4);
+    Floor* newFloor5 = new Floor("Floor5", { 132,400 }, m_graphics, "FloorM");
+    m_entityVec.push_back(newFloor5);
+    Floor* newFloor6 = new Floor("Floor6", { 164,400 }, m_graphics, "FloorM");
+    m_entityVec.push_back(newFloor6);
+    Floor* newFloor7 = new Floor("Floor7", { 196,400 }, m_graphics, "FloorM");
+    m_entityVec.push_back(newFloor7);
+    Floor* newFloor8 = new Floor("Floor8", { 228,400 }, m_graphics, "FloorM");
+    m_entityVec.push_back(newFloor8);
 }
 
 int World::Run()
@@ -85,10 +94,19 @@ int World::Run()
         //Clear the window
         window.clear();
 
-        for (auto entity : m_entityVec)
+        for (auto& entity : m_entityVec)
         {
-            for (auto entity2 : m_entityVec)
-				entity->CheckCollision(m_graphics, entity2->GetName(), entity2->GetRectangle(m_graphics));
+            bool collided = false;
+
+            for (auto& entity2 : m_entityVec)
+            {
+                if (entity == entity2) continue;  // skip self
+
+                if (entity->CheckCollision(entity2.get()))
+                    collided = true;
+            }
+
+            entity->SetColliding(collided);
         }
 
 

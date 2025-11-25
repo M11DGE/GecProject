@@ -25,6 +25,7 @@ public:
 	bool CheckCollision(const std::string& spriteName, const MyRectangle& rect);
 	sf::Vector2f GetSpritePos(const std::string& spriteName);
 	void SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance);
+	bool IsSpriteFacingRight(const std::string& spriteName);
 	void SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale);
 	void FlipSprite(const std::string& spriteName, const int& flip);
 	MyRectangle GetRectangle(const std::string& spriteName);

@@ -31,4 +31,11 @@ void Floor::Draw(Graphics* graphics, sf::RenderWindow& window)
 
 void Floor::CheckCollision(Graphics* graphics, const std::string& otherObjectName, const MyRectangle& rect)
 {
+	if (otherObjectName.find("Floor") != std::string::npos)
+	{
+		graphics->CheckCollision(otherObjectName, rect);
+		return;
+	}
+	else 
+		return;
 }

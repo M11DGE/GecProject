@@ -148,6 +148,7 @@
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RedirectCout.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="ExternalHeaders.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="resource.h" />

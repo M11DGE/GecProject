@@ -42,6 +42,7 @@ public:
 	void ChangeTexture(const std::string& textureName, const bool& midAnimation);
 	sf::Vector2f GetPos();
 	void SetPos(const sf::Vector2f& amount);
+	bool IsFacingRight();
 	void SetScale(const sf::Vector2f& scale);
 	void Flip(const int& flip);
 	MyRectangle GetRect();
