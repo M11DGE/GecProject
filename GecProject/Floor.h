@@ -11,6 +11,5 @@ public:
 	void LoadTextures(Graphics* graphics) override;
 	virtual void Update(sf::RenderWindow& window, Graphics* graphics) override;
 	virtual void Draw(Graphics* graphics, sf::RenderWindow& window) override;
-	virtual void CheckCollision(Graphics* graphics, const std::string& otherObjectName, const MyRectangle& rect) override;
 };
 

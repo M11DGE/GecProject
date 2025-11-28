@@ -102,7 +102,7 @@ int World::Run()
             {
                 if (entity == entity2) continue;  // skip self
 
-                if (entity->CheckCollision(entity2.get()))
+                if (entity->CheckCollision(entity2, m_graphics))
                     collided = true;
             }
 
@@ -111,8 +111,10 @@ int World::Run()
 
 
         for (auto entity : m_entityVec)
+        {
             entity->Update(window, m_graphics);
-
+			entity->ResetCollisionFlags();
+        }
         // UI needs drawing last
         ImGui::SFML::Render(window);
 

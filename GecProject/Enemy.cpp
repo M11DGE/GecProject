@@ -10,39 +10,66 @@ Enemy::Enemy(const std::string& entName, Graphics* graphics)
 	graphics->CreateSprite(m_name);
 	graphics->SetSpritePos(m_name, m_pos);
 	graphics->SetSpriteScale(m_name, { 0.2f,0.2f });
+	m_scale = graphics->GetSpriteScale(m_name).y;
 	LoadTextures(graphics);
 	graphics->ChangeTexture(m_name, "Idle Ani");
 }
 
 void Enemy::Update(sf::RenderWindow& window, Graphics* graphics)
 {
-	graphics->UpdateSprite(m_name, m_clock, window);
+	graphics->ChangeTexture(m_name, m_currentAni);
+	graphics->UpdateSprite(m_name, m_clock);
+	UpdateRectangle();
 	Draw(graphics, window);
 }
 
-void Enemy::CheckCollision(Graphics* graphics, const std::string& otherObjectName, const MyRectangle& rect)
+bool Enemy::CheckCollision(Entity* other, Graphics* graphics)
 {
-	if (otherObjectName != m_name)
-	{
-		if (graphics->CheckCollision(m_name, rect) == true && otherObjectName == "Player")
+		if (m_rectangle.DoTheyIntersect(other->GetRectangle()) == true && other->GetName() == "Player")
 		{
-			graphics->ChangeTexture(m_name, "Attack Ani", true);
-			std::cout << otherObjectName << std::endl;
+			m_currentAni = "Attack Ani";
+			graphics->ChangeTexture(m_name, m_currentAni, true);
+			std::cout << other->GetName() << std::endl;
 		}
-	}
 	else
-		graphics->ChangeTexture(m_name, "Idle Ani");
+		m_currentAni = "Idle Ani";
+
+	if (!other) return false;
+
+	if (m_rectangle.DoTheyIntersect(other->GetRectangle()))
+		switch (m_rectangle.WhichSideCollided(other->GetRectangle()))
+		{
+		case Direction::Up:
+			m_collisionFlags.top = true;
+			break;
+		case Direction::Down:
+			m_collisionFlags.bottom = true;
+			break;
+		case Direction::Left:
+			m_collisionFlags.left = true;
+			break;
+		case Direction::Right:
+			m_collisionFlags.right = true;
+			break;
+		}
+
+	return m_rectangle.DoTheyIntersect(other->GetRectangle());
 }
 
 void Enemy::Draw(Graphics* graphics, sf::RenderWindow& window)
 {
 	graphics->DrawSprite(m_name, window);
+	window.draw(m_rectangle.GetHitbox());
 }
 
 void Enemy::LoadTextures(Graphics* graphics)
 {
 	graphics->AddAnimationSet(m_name, "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
+	m_textures["Idle Ani"] = sf::Vector2f(432, 521);
 	graphics->AddAnimationSet(m_name, "Walk Ani", AnimationSetData("Walk Ani", 10, 432, 521));
+	m_textures["Walk Ani"] = sf::Vector2f(432, 521);
 	graphics->AddAnimationSet(m_name, "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
+	m_textures["Attack Ani"] = sf::Vector2f(432, 521);
 	graphics->AddAnimationSet(m_name, "Dead Ani", AnimationSetData("Dead Ani", 12, 632, 528));
+	m_textures["Dead Ani"] = sf::Vector2f(632, 528);
 }

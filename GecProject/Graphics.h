@@ -18,16 +18,13 @@ public:
 	bool AddAnimationSet(const std::string& spriteName, const std::string& setName, const AnimationSetData& setData );
 	bool CreateSprite(const std::string& name);
 	void DrawSprite(const std::string& spriteName, sf::RenderWindow& window);
-	void UpdateSprite(const std::string& spriteName, sf::Clock& clock, sf::RenderWindow& window);
+	void UpdateSprite(const std::string& spriteName, sf::Clock& clock);
 	void UpdateSprite(const std::string& spriteName);
-	void MoveSprite(const std::string& spriteName, const Direction& dir);
 	void ChangeTexture(const std::string& spriteName, const std::string& textureName, const bool& midAnimation = false);
-	bool CheckCollision(const std::string& spriteName, const MyRectangle& rect);
 	sf::Vector2f GetSpritePos(const std::string& spriteName);
+	sf::Vector2f GetSpriteScale(const std::string& spriteName);
 	void SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance);
-	bool IsSpriteFacingRight(const std::string& spriteName);
 	void SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale);
-	void FlipSprite(const std::string& spriteName, const int& flip);
-	MyRectangle GetRectangle(const std::string& spriteName);
+	void DrawHealthBar(sf::RenderWindow& window, const sf::Vector2f& position, const float& healthPercent);
 };
 

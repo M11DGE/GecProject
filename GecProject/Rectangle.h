@@ -1,4 +1,5 @@
 #pragma once
+#include "Direction.h"
 #include <SFML/Graphics.hpp>
 
 class MyRectangle
@@ -14,6 +15,7 @@ public:
 	void SetRectangle(const float& left, const float& right, const float& top, const float& bottom);
 	void Move(const sf::Vector2f& amount);
 	bool DoTheyIntersect(const MyRectangle& rectangle) const ;
+	Direction WhichSideCollided(const MyRectangle& rectangle) const;
 	sf::RectangleShape GetHitbox() { return hitbox; }
 };
 

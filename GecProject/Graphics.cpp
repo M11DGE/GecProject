@@ -59,9 +59,9 @@ void Graphics::DrawSprite(const std::string& spriteName, sf::RenderWindow& windo
     m_spriteMap[spriteName]->DrawSprite(window);
 }
 
-void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock, sf::RenderWindow& window)
+void Graphics::UpdateSprite(const std::string& spriteName, sf::Clock& clock)
 {
-    m_spriteMap[spriteName]->Update(clock, window);
+    m_spriteMap[spriteName]->Update(clock);
 }
 
 void Graphics::UpdateSprite(const std::string& spriteName)
@@ -69,19 +69,9 @@ void Graphics::UpdateSprite(const std::string& spriteName)
     m_spriteMap[spriteName]->Update();
 }
 
-void Graphics::MoveSprite(const std::string& spriteName, const Direction& dir)
-{
-	m_spriteMap[spriteName]->Move(dir);
-}
-
 void Graphics::ChangeTexture(const std::string& spriteName, const std::string& textureName, const bool& midAnimation)
 {
     m_spriteMap[spriteName]->ChangeTexture(textureName, midAnimation);
-}
-
-bool Graphics::CheckCollision(const std::string& spriteName, const MyRectangle& rect)
-{
-	return m_spriteMap[spriteName]->Collision(rect);
 }
 
 sf::Vector2f Graphics::GetSpritePos(const std::string& spriteName)
@@ -89,14 +79,14 @@ sf::Vector2f Graphics::GetSpritePos(const std::string& spriteName)
     return m_spriteMap[spriteName]->GetPos();
 }
 
+sf::Vector2f Graphics::GetSpriteScale(const std::string& spriteName)
+{
+    return m_spriteMap[spriteName]->GetScale();
+}
+
 void Graphics::SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance)
 {
     m_spriteMap[spriteName]->SetPos(distance);
-}
-
-bool Graphics::IsSpriteFacingRight(const std::string& spriteName)
-{
-    if
 }
 
 void Graphics::SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale)
@@ -104,13 +94,15 @@ void Graphics::SetSpriteScale(const std::string& spriteName, const sf::Vector2f&
 	m_spriteMap[spriteName]->SetScale(scale);
 }
 
-void Graphics::FlipSprite(const std::string& spriteName,const int& flip)
+void Graphics::DrawHealthBar(sf::RenderWindow& window, const sf::Vector2f& position, const float& healthPercent)
 {
-    m_spriteMap[spriteName]->Flip(flip);
-}
-
-MyRectangle Graphics::GetRectangle(const std::string& spriteName)
-{
-    return m_spriteMap[spriteName]->GetRect();
+    sf::RectangleShape backBar(sf::Vector2f(104.0f, 14.0f));
+    backBar.setFillColor(sf::Color(50, 50, 50));
+    backBar.setPosition(position);
+    sf::RectangleShape healthBar(sf::Vector2f(healthPercent * 100.0f, 10.0f));
+    healthBar.setFillColor(sf::Color(100, 250, 50));
+    healthBar.setPosition({ position.x + 2.0f, position.y + 2.0f });
+    window.draw(backBar);
+	window.draw(healthBar);
 }
 

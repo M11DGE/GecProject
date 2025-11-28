@@ -33,19 +33,14 @@ public:
 	~Sprite() { delete m_sprite; delete m_rectangle; }
 	void AddAnimationSet(const std::string& name,const AnimationSetData& setData, sf::Texture* texture);
 	void DrawSprite(sf::RenderWindow& window);
-	void Update(sf::Clock& clock, sf::RenderWindow& window);
+	void Update(sf::Clock& clock);
 	void Update();
-	void UpdateRectangle();
-	bool Collision(const MyRectangle& rect);
 	std::string GetSpriteName();
-	void Move(const Direction& dir);
 	void ChangeTexture(const std::string& textureName, const bool& midAnimation);
 	sf::Vector2f GetPos();
 	void SetPos(const sf::Vector2f& amount);
-	bool IsFacingRight();
 	void SetScale(const sf::Vector2f& scale);
-	void Flip(const int& flip);
-	MyRectangle GetRect();
+	sf::Vector2f GetScale();;
 	std::string GetCurrentTex() { return m_currentTex; }
 };
 

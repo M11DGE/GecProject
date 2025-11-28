@@ -35,3 +35,31 @@ bool MyRectangle::DoTheyIntersect(const MyRectangle& rectangle) const
 	return true;
 }
 
+Direction MyRectangle::WhichSideCollided(const MyRectangle& rectangle) const
+{
+	if (m_left > rectangle.m_right) return Direction::None;
+	if (m_right < rectangle.m_left) return Direction::None;
+	if (m_top > rectangle.m_bottom) return Direction::None;
+	if (m_bottom < rectangle.m_top) return Direction::None;
+
+	// Compute overlap distances
+	float overlapLeft = m_right - rectangle.m_left;
+	float overlapRight = rectangle.m_right - m_left;
+	float overlapTop = m_bottom - rectangle.m_top;
+	float overlapBottom = rectangle.m_bottom - m_top;
+
+	// Find smallest overlap
+	float minOverlap = std::min({ overlapLeft, overlapRight, overlapTop, overlapBottom });
+
+	if (minOverlap == overlapLeft)
+		return Direction::Left;
+	if (minOverlap == overlapRight)
+		return Direction::Right;
+	if (minOverlap == overlapTop)
+		return Direction::Up;
+	if (minOverlap == overlapBottom)
+		return Direction::Down;
+
+	return Direction::None;
+}
+

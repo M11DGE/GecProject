@@ -22,34 +22,6 @@ float height = 65.125f;
 int fps = 0;
 int frames = 0;
 
-void Inputs(Graphics* graphics) {
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        graphics->MoveSprite("Zombie", Direction::Up);
-        graphics->ChangeTexture("Zombie", "Walk Ani");
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        graphics->MoveSprite("Zombie", Direction::Left);
-        graphics->ChangeTexture("Zombie", "Walk Ani");
-        graphics->FlipSprite("Zombie", -1);
-
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        graphics->MoveSprite("Zombie", Direction::Down);
-        graphics->ChangeTexture("Zombie", "Walk Ani");
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        graphics->MoveSprite("Zombie", Direction::Right);
-        graphics->ChangeTexture("Zombie", "Walk Ani");
-        graphics->FlipSprite("Zombie", 1);
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
-        graphics->ChangeTexture("Zombie", "Dead Ani");
-    else
-        graphics->ChangeTexture("Zombie", "Idle Ani");
-
-}
-
 int main()
 {
     // Redirect cout to the Visual Studio output pane

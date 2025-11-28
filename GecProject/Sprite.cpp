@@ -17,7 +17,7 @@ void Sprite::DrawSprite(sf::RenderWindow& window)
 		window.draw(m_rectangle->GetHitbox());
 }
 
-void Sprite::Update(sf::Clock& clock, sf::RenderWindow& window)
+void Sprite::Update(sf::Clock& clock)
 {
     m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * m_AnimationSet[m_currentTex].setData.m_XAndY.y }, { m_intRectSize }));
         if (clock.getElapsedTime().asSeconds() >= 0.07f) {
@@ -28,81 +28,16 @@ void Sprite::Update(sf::Clock& clock, sf::RenderWindow& window)
         }
         if (m_midAnimation == true && m_frameNum == 0)
             m_midAnimation = false;
-    UpdateRectangle();
 }
 
 void Sprite::Update()
 {
     m_sprite->setTextureRect(sf::IntRect({ 0,m_frameNum * m_AnimationSet[m_currentTex].setData.m_XAndY.y }, { m_intRectSize }));
-    UpdateRectangle();
-}
-
-void Sprite::UpdateRectangle()
-{
-    int flipOffset = (m_AnimationSet[m_currentTex].setData.m_XAndY.x) * abs(m_sprite->getScale().x);
-        sf::Vector2f pos = m_sprite->getPosition();
-        float left = pos.x;
-        float top = pos.y;
-        float width = m_intRectSize.x * abs(m_sprite->getScale().x);
-        float height = m_intRectSize.y * m_sprite->getScale().y;
-        if (m_sprite->getScale().x > 0)
-        m_rectangle->SetRectangle(left, (left + width), top, top + height);
-        if (m_sprite->getScale().x < 0)
-        m_rectangle->SetRectangle(left - flipOffset, (left + width) - flipOffset, top, (top + height));
-}
-
-bool Sprite::Collision(const MyRectangle& rect)
-{
-    return m_rectangle->DoTheyIntersect(rect);
 }
 
 std::string Sprite::GetSpriteName()
 {
     return m_name;
-}
-
-void Sprite::Move(const Direction& dir)
-{
-    m_currentDir = dir;
-    if (m_collisionDir == m_currentDir)
-    {
-        switch (m_currentDir)
-        {
-        case Direction::Up:
-            m_sprite->move({ 0,0.5 });
-            break;
-        case Direction::Down:
-            m_sprite->move({ 0,-0.5 });
-            break;
-        case Direction::Left:
-            m_sprite->move({ 1.25,0 });
-            break;
-        case Direction::Right:
-            m_sprite->move({ -1.25,0 });
-            break;
-        }
-    }
-    else if (m_collisionDir != m_currentDir)
-    {
-        switch (m_currentDir)
-        {
-        case Direction::Up:
-            m_sprite->move({ 0,-0.05 });
-            break;
-        case Direction::Down:
-            m_sprite->move({ 0,0.05 });
-            break;
-        case Direction::Left:
-            m_sprite->move({ -0.05,0 });
-			Flip(-1);
-            break;
-        case Direction::Right:
-            m_sprite->move({ 0.05,0 });
-            Flip(1);
-            break;
-        }
-    }
-    
 }
 
 void Sprite::ChangeTexture(const std::string& textureName, const bool& midAnimation)
@@ -133,46 +68,14 @@ void Sprite::SetPos(const sf::Vector2f& amount)
     m_sprite->setPosition(amount);
 }
 
-bool Sprite::IsFacingRight()
-{
-    if (m_sprite->getScale().x > 0)
-        return true;
-    else
-		return false;
-}
-
 void Sprite::SetScale(const sf::Vector2f& scale)
 {
 	m_sprite->setScale(scale);
 }
 
-void Sprite::Flip(const int& flip)
+sf::Vector2f Sprite::GetScale()
 {
-	float scale = m_sprite->getScale().y;
-    if (m_flip == flip)
-        return;
-    if (m_flip == 1)
-    {
-        m_sprite->setScale({-(m_sprite->getScale().x), m_sprite->getScale().y});
-        m_sprite->move(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * scale, 0));
-        m_flip = -1;
-        m_rectangle->Move({ 421, 0 });
-
-        return;
-    }
-    else if (m_flip == -1)
-    {
-        m_sprite->setScale({-(m_sprite->getScale().x), m_sprite->getScale().y});
-        m_sprite->move(-(sf::Vector2f((m_AnimationSet[m_currentTex].setData.m_XAndY.x) * scale, 0)));
-        m_flip = 1;
-        m_rectangle->Move({-421, 0});
-        return;
-    }
-}
-
-MyRectangle Sprite::GetRect()
-{
-    return *m_rectangle;
+    return m_sprite->getScale();
 }
 
 AnimationSet::AnimationSet(const AnimationSetData& setDataData, sf::Texture* texture) : setData(setDataData), sfmlTexture(texture)
