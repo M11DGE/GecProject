@@ -18,6 +18,7 @@ public:
     virtual void Update(sf::RenderWindow& window, Graphics* graphics)override;
     virtual void Draw(Graphics* graphics, sf::RenderWindow& window)override;
     virtual void LoadTextures(Graphics* graphics) override;
+    virtual void TakeDamage(const int& damage, Graphics* graphics) override;
 	void Jump(Graphics* graphics);
     void Inputs(Graphics* graphics);
 	int GetHealth() { return m_health; }

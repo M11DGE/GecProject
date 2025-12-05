@@ -7,11 +7,11 @@ Player::Player(const std::string& entName, Graphics* graphics)
 	m_health = 100;
 	m_pos = { 50,50 };
 	m_name = entName;
-	m_currentAni = "Idle Ani";
+	m_currentAni = "PIdle Ani";
 	m_clock.start();
 	graphics->CreateSprite(m_name);
 	graphics->SetSpritePos(m_name, m_pos);
-	graphics->SetSpriteScale(m_name, { 0.2f,0.2f });
+	graphics->SetSpriteScale(m_name, { 2,2 });
 	m_scale = graphics->GetSpriteScale(m_name).y;
 	LoadTextures(graphics);
 }
@@ -37,14 +37,25 @@ void Player::Draw(Graphics* graphics, sf::RenderWindow& window)
 
 void Player::LoadTextures(Graphics* graphics)
 {
-	graphics->AddAnimationSet(m_name, "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
-	m_textures["Idle Ani"] = sf::Vector2f(432, 521);
-	graphics->AddAnimationSet(m_name, "Walk Ani", AnimationSetData("Walk Ani", 10, 432, 521));
-	m_textures["Walk Ani"] = sf::Vector2f(432, 521);
-	graphics->AddAnimationSet(m_name, "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
-	m_textures["Attack Ani"] = sf::Vector2f(432, 521);
-	graphics->AddAnimationSet(m_name, "Dead Ani", AnimationSetData("Dead Ani", 12, 632, 528));
-	m_textures["Dead Ani"] = sf::Vector2f(632, 528);
+	graphics->AddAnimationSet(m_name, "PIdle Ani", AnimationSetData("PIdle Ani", 4, 50, 50));
+	m_textures["PIdle Ani"] = sf::Vector2f(30, 50);
+	graphics->AddAnimationSet(m_name, "PWalk Ani", AnimationSetData("PWalk Ani", 6, 50, 50));
+	m_textures["PWalk Ani"] = sf::Vector2f(30, 50);
+	graphics->AddAnimationSet(m_name, "PAttack Ani", AnimationSetData("PAttack Ani", 6, 50, 50));
+	m_textures["PAttack Ani"] = sf::Vector2f(50, 50);
+	graphics->AddAnimationSet(m_name, "PDead Ani", AnimationSetData("PDead Ani", 6, 50, 50));
+	m_textures["PDead Ani"] = sf::Vector2f(50, 50);
+	graphics->AddAnimationSet(m_name, "PHurt Ani", AnimationSetData("PHurt Ani", 2, 50, 50));
+	m_textures["PHurt Ani"] = sf::Vector2f(50, 50);
+	graphics->AddAnimationSet(m_name, "PAttackRange Ani", AnimationSetData("PAttackRange Ani", 8, 50, 300));
+	m_textures["PAttack Ani"] = sf::Vector2f(50, 50);
+}
+
+void Player::TakeDamage(const int& damage, Graphics* graphics)
+{
+	m_health -= damage;
+	m_currentAni = "PHurt Ani";
+	graphics->ChangeTexture(m_name, m_currentAni, true);
 }
 
 void Player::Jump(Graphics* graphics)
@@ -63,32 +74,32 @@ void Player::Inputs(Graphics* graphics)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 	{
 		m_midJump = true;
-		m_currentAni = "Walk Ani";
+		m_currentAni = "PWalk Ani";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 	{
 		m_currentDir = Direction::Up;
-		m_currentAni = "Walk Ani";
+		m_currentAni = "PWalk Ani";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
 		m_currentDir = Direction::Left;
-		m_currentAni = "Walk Ani";
+		m_currentAni = "PWalk Ani";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
 		m_currentDir = Direction::Down;
-		m_currentAni = "Walk Ani";
+		m_currentAni = "PWalk Ani";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
 		m_currentDir = Direction::Right;
-		m_currentAni = "Walk Ani";
+		m_currentAni = "PWalk Ani";
 	}
 	else
 	{
 		m_currentDir = Direction::None;
-		m_currentAni = "Idle Ani";
+		m_currentAni = "PIdle Ani";
 	}
 	MoveEnt(m_currentDir, graphics);
 }

@@ -21,6 +21,18 @@ bool World::LoadTextures()
 		return false;
     if (!m_graphics->LoadTexture("FloorM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_14.png"))
         return false;
+    if(!m_graphics->LoadTexture("PAttack Ani", "Data/Textures/CyberSprites/2 Punk/PunkAttack.png"))
+		return false;
+    if (!m_graphics->LoadTexture("PWalk Ani", "Data/Textures/CyberSprites/2 Punk/PunkRun.png"))
+        return false;
+    if (!m_graphics->LoadTexture("PHurt Ani", "Data/Textures/CyberSprites/2 Punk/PunkHurt.png"))
+        return false;
+    if (!m_graphics->LoadTexture("PAttackRange Ani", "Data/Textures/CyberSprites/2 Punk/PunkAttack3.png"))
+        return false;
+    if (!m_graphics->LoadTexture("PIdle Ani", "Data/Textures/CyberSprites/2 Punk/PunkIdle.png"))
+        return false;
+    if (!m_graphics->LoadTexture("PDead Ani", "Data/Textures/CyberSprites/2 Punk/PunkDead.png"))
+        return false;
     return true;
 }
 

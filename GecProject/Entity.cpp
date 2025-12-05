@@ -153,3 +153,8 @@ bool Entity::IsBlocked(Direction dir) const
         return false;
     }
 }
+
+void Entity::TakeDamage(const int& damage, Graphics* graphics)
+{
+    m_health -= damage;
+}

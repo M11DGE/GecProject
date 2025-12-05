@@ -29,6 +29,7 @@ bool Enemy::CheckCollision(Entity* other, Graphics* graphics)
 		{
 			m_currentAni = "Attack Ani";
 			graphics->ChangeTexture(m_name, m_currentAni, true);
+			other->TakeDamage(10, graphics);
 			std::cout << other->GetName() << std::endl;
 		}
 	else

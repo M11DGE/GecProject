@@ -62,4 +62,6 @@ public:
 	void MoveEnt(const Direction& direction, Graphics* graphics);
 	void MoveEnt(const sf::Vector2f& distance, Graphics* graphics);
 	void Flip(const int& flip, Graphics* graphics);
+
+	virtual void TakeDamage(const int& damage, Graphics* graphics);
 };
