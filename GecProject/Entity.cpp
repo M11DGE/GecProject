@@ -127,6 +127,11 @@ std::string Entity::GetName()
     return m_name;
 }
 
+sf::Vector2f Entity::GetPos()
+{
+    return m_pos;
+}
+
 void Entity::ResetCollisionFlags()
 {
     m_collisionFlags.Reset();

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Floor.h"
+#include "Background.h"
 
 bool World::LoadTextures()
 {
@@ -33,6 +34,14 @@ bool World::LoadTextures()
         return false;
     if (!m_graphics->LoadTexture("PDead Ani", "Data/Textures/CyberSprites/2 Punk/PunkDead.png"))
         return false;
+    if (!m_graphics->LoadTexture("Background4", "Data/Textures/CyberpunkWorld/Backgrounds/2/Day/1.png"))
+        return false;
+    if (!m_graphics->LoadTexture("Background3", "Data/Textures/CyberpunkWorld/Backgrounds/2/Day/2.png"))
+        return false;
+    if (!m_graphics->LoadTexture("Background2", "Data/Textures/CyberpunkWorld/Backgrounds/2/Day/3.png"))
+        return false;
+    if (!m_graphics->LoadTexture("Background1", "Data/Textures/CyberpunkWorld/Backgrounds/2/Day/5.png"))
+        return false;
     return true;
 }
 
@@ -58,6 +67,24 @@ void World::CreateSprites()
     m_entityVec.push_back(newFloor7);
     Floor* newFloor8 = new Floor("Floor8", { 228,400 }, m_graphics, "FloorM");
     m_entityVec.push_back(newFloor8);
+
+	Background* newBackground = new Background("Background", { 0,0 }, m_graphics, "Background4", 0.001f);
+	m_backgroundVec.push_back(newBackground);
+    Background* newBackgrounds = new Background("Background.5", { 1152,0 }, m_graphics, "Background4", 0.001f);
+    m_backgroundVec.push_back(newBackgrounds);
+	Background* newBackground2 = new Background("Background2", { 0,0 }, m_graphics, "Background3", 0.375f);
+	m_backgroundVec.push_back(newBackground2);
+    Background* newBackground2s = new Background("Background2.5", { 1152,0 }, m_graphics, "Background4", 0.375f);
+    m_backgroundVec.push_back(newBackground2s);
+	Background* newBackground3 = new Background("Background3", { 0,0 }, m_graphics, "Background2", 0.75f);
+	m_backgroundVec.push_back(newBackground3);
+    Background* newBackground3s = new Background("Background3.5", { 1152,0 }, m_graphics, "Background2", 0.75f);
+    m_backgroundVec.push_back(newBackground3s);
+	Background* newBackground4 = new Background("Background4", { 0,0 }, m_graphics, "Background1", 1.5);
+	m_backgroundVec.push_back(newBackground4);
+    Background* newBackground4s = new Background("Background4.5", { 1152,0 }, m_graphics, "Background1", 1.5);
+    m_backgroundVec.push_back(newBackground4s);
+
 }
 
 int World::Run()
@@ -105,6 +132,15 @@ int World::Run()
 
         //Clear the window
         window.clear();
+		if (m_clock.getElapsedTime().asMilliseconds() >= 20)
+        {
+			UpdateBackgrounds();
+            m_clock.restart();
+        }
+		for (auto background : m_backgroundVec)
+        {
+            background->Draw(m_graphics, window);
+        }
 
         for (auto& entity : m_entityVec)
         {
@@ -165,4 +201,36 @@ void World::DefineGUI()
     ImGui::Text(fpsText.c_str());
 
     ImGui::End();
+}
+
+void World::UpdateBackgrounds()
+{
+    for (auto background : m_backgroundVec)
+    {
+        background->Move(m_graphics);
+	}
+	if (m_backgroundVec[2]->GetPos().x <= -1152)
+    {
+        m_backgroundVec[2]->SetPosX(m_backgroundVec[3]->GetPos().x + 1152);
+    }
+    if (m_backgroundVec[3]->GetPos().x <= -1152)
+    {
+        m_backgroundVec[3]->SetPosX(m_backgroundVec[2]->GetPos().x + 1152);
+    }
+    if (m_backgroundVec[4]->GetPos().x <= -1152)
+    {
+        m_backgroundVec[4]->SetPosX(m_backgroundVec[5]->GetPos().x + 1152);
+    }
+    if (m_backgroundVec[5]->GetPos().x <= -1152)
+    {
+        m_backgroundVec[5]->SetPosX(m_backgroundVec[4]->GetPos().x + 1152);
+    }
+    if (m_backgroundVec[6]->GetPos().x <= -1152)
+    {
+        m_backgroundVec[6]->SetPosX(m_backgroundVec[7]->GetPos().x + 1152);
+    }
+    if (m_backgroundVec[7]->GetPos().x <= -1152)
+    {
+        m_backgroundVec[7]->SetPosX(m_backgroundVec[6]->GetPos().x + 1152);
+    }
 }

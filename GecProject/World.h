@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphics.h"
 #include "Entity.h"
+#include "Background.h"
 #include <map>
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -14,6 +15,7 @@ private:
 	Graphics* m_graphics;
 	sf::Clock m_clock;
 	std::vector<Entity*> m_entityVec;
+	std::vector<Background*> m_backgroundVec;
 	int m_fps;
 
 public:
@@ -24,5 +26,6 @@ public:
 	int Run();
 	void update();
 	void DefineGUI();
+	void UpdateBackgrounds();
 };
 

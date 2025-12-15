@@ -48,6 +48,8 @@ public:
 	void Gravity(Graphics* graphics);
 
 	std::string GetName();
+	sf::Vector2f GetPos();
+	void SetPosX(const float& pos) { m_pos.x = pos; }
 	
 	void ResetCollisionFlags();
 	bool IsBlocked(Direction dir) const;
