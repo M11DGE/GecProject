@@ -106,3 +106,8 @@ void Graphics::DrawHealthBar(sf::RenderWindow& window, const sf::Vector2f& posit
 	window.draw(healthBar);
 }
 
+int Graphics::GetSpriteFrameNum(const std::string& spriteName)
+{
+    return m_spriteMap[spriteName]->GetFramNum();
+}
+

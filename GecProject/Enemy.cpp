@@ -3,7 +3,7 @@
 Enemy::Enemy(const std::string& entName, Graphics* graphics)
 {
 	m_health = 100;
-	m_pos = { 200,200 };
+	m_pos = { 700,200 };
 	m_name = entName;
 	m_clock.start();
 	m_currentAni = "Idle Ani";
@@ -17,6 +17,7 @@ Enemy::Enemy(const std::string& entName, Graphics* graphics)
 
 void Enemy::Update(sf::RenderWindow& window, Graphics* graphics)
 {
+	/*Move(graphics);*/
 	graphics->ChangeTexture(m_name, m_currentAni);
 	graphics->UpdateSprite(m_name, m_clock);
 	UpdateRectangle();
@@ -66,11 +67,19 @@ void Enemy::Draw(Graphics* graphics, sf::RenderWindow& window)
 void Enemy::LoadTextures(Graphics* graphics)
 {
 	graphics->AddAnimationSet(m_name, "Idle Ani", AnimationSetData("Idle Ani", 15, 432, 521));
-	m_textures["Idle Ani"] = sf::Vector2f(432, 521);
+	m_textures["Idle Ani"] = AnimationSetData("Idle Ani", 15, 432, 521);
 	graphics->AddAnimationSet(m_name, "Walk Ani", AnimationSetData("Walk Ani", 10, 432, 521));
-	m_textures["Walk Ani"] = sf::Vector2f(432, 521);
+	m_textures["Walk Ani"] = AnimationSetData("Walk Ani", 10, 432, 521);
 	graphics->AddAnimationSet(m_name, "Attack Ani", AnimationSetData("Attack Ani", 8, 432, 521));
-	m_textures["Attack Ani"] = sf::Vector2f(432, 521);
+	m_textures["Attack Ani"] = AnimationSetData("Attack Ani", 8, 432, 521);
 	graphics->AddAnimationSet(m_name, "Dead Ani", AnimationSetData("Dead Ani", 12, 632, 528));
-	m_textures["Dead Ani"] = sf::Vector2f(632, 528);
+	m_textures["Dead Ani"] = AnimationSetData("Dead Ani", 12, 632, 528);
+}
+
+void Enemy::Move(Graphics* graphics)
+{
+	m_currentDir = Direction::Left;
+	Flip(-1, graphics);
+	m_currentAni = "Walk Ani";
+	MoveEnt({-1.5, 0}, graphics);
 }

@@ -11,5 +11,6 @@ public:
 		virtual bool CheckCollision(Entity* other, Graphics* graphics)override;
         virtual void Draw(Graphics* graphics, sf::RenderWindow& window)override;
 		virtual void LoadTextures(Graphics* graphics) override;
+        void Move(Graphics* graphics);
 };
 

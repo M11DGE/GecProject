@@ -46,9 +46,9 @@ bool Entity::CheckCollision(Entity* otherEntity, Graphics* graphics)
 void Entity::UpdateRectangle()
 {
     if (m_flip == 1)
-	m_rectangle.SetRectangle(m_pos.x,m_pos.x + (m_textures[m_currentAni].x * m_scale) , m_pos.y , m_pos.y + (m_textures[m_currentAni].y * m_scale));
+	m_rectangle.SetRectangle(m_pos.x,m_pos.x + (m_textures[m_currentAni].m_XAndY.x * m_scale) , m_pos.y , m_pos.y + (m_textures[m_currentAni].m_XAndY.y * m_scale));
 	else if (m_flip == -1)
-		m_rectangle.SetRectangle(m_pos.x - (m_textures[m_currentAni].x * m_scale), m_pos.x , m_pos.y , m_pos.y + (m_textures[m_currentAni].y * m_scale));
+		m_rectangle.SetRectangle(m_pos.x - (m_textures[m_currentAni].m_XAndY.x * m_scale), m_pos.x , m_pos.y , m_pos.y + (m_textures[m_currentAni].m_XAndY.y * m_scale));
 }
 
 void Entity::MoveEnt(const Direction& direction, Graphics* graphics)
@@ -69,17 +69,17 @@ void Entity::MoveEnt(const Direction& direction, Graphics* graphics)
         switch (m_currentDir)
         {
         case Direction::Up:
-            m_pos +={ 0,-0.05 };
+            m_pos +={ 0,-2 };
             break;
         case Direction::Down:
-            m_pos +={ 0,0.05 };
+            m_pos +={ 0,2 };
             break;
         case Direction::Left:
-            m_pos +={ -0.05,0 };
+            m_pos +={ -2,0 };
             Flip(-1, graphics);
             break;
         case Direction::Right:
-            m_pos +={ 0.05,0 };
+            m_pos +={ 2,0 };
             Flip(1, graphics);
             break;
         }
@@ -101,7 +101,7 @@ void Entity::Flip(const int& flip, Graphics* graphics)
     if (m_flip == 1)
     {
         graphics->SetSpriteScale(m_name, {-(graphics->GetSpriteScale(m_name).x),graphics->GetSpriteScale(m_name).y});
-        MoveEnt({(m_textures[m_currentAni].x * graphics->GetSpriteScale(m_name).y), 0 }, graphics);
+        MoveEnt({(m_textures[m_currentAni].m_XAndY.x * graphics->GetSpriteScale(m_name).y), 0 }, graphics);
         m_flip = -1;
         UpdateRectangle();
 
@@ -110,11 +110,17 @@ void Entity::Flip(const int& flip, Graphics* graphics)
     else if (m_flip == -1)
     {
         graphics->SetSpriteScale(m_name, { -(graphics->GetSpriteScale(m_name).x),graphics->GetSpriteScale(m_name).y });
-        MoveEnt({-(m_textures[m_currentAni].x * graphics->GetSpriteScale(m_name).y), 0 }, graphics);
+        MoveEnt({-(m_textures[m_currentAni].m_XAndY.x * graphics->GetSpriteScale(m_name).y), 0 }, graphics);
         m_flip = 1;
         UpdateRectangle();
         return;
     }
+}
+
+void Entity::IsAniFinished(Graphics* graphics)
+{
+    if (m_midAnimation == true && graphics->GetSpriteFrameNum(m_name) == m_textures[m_currentAni].m_NumOfFrames)
+		m_midAnimation = false;
 }
 
 void Entity::Gravity(Graphics* graphics)

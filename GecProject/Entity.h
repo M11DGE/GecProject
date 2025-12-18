@@ -24,7 +24,8 @@ class Entity
 private:
 
 protected:
-	int m_health;
+	int m_health = 0;
+	int m_maxHealth = 0;
 	int m_flip = 1;
 	float m_scale = 1.0f;
 	std::string m_name;
@@ -34,16 +35,18 @@ protected:
 	Direction m_currentDir{ Direction::None };
 	Direction m_collisionDir{ Direction::None };
 	bool m_isColliding{ false };
+	bool m_midAnimation{ false };
 	MyRectangle m_rectangle;
 	CollisionFlags m_collisionFlags;
-	std::unordered_map<std::string, sf::Vector2f > m_textures;
+	std::unordered_map<std::string, AnimationSetData > m_textures;
 
 public:
-	Entity() {};
+	Entity() {}
 	virtual void Update(sf::RenderWindow& window, Graphics* graphics);
 	virtual void Draw(Graphics* graphics, sf::RenderWindow& window) = 0;
 
 	virtual void LoadTextures(Graphics* graphics) = 0;
+	void IsAniFinished(Graphics* graphics);
 	
 	void Gravity(Graphics* graphics);
 
@@ -58,7 +61,7 @@ public:
 	bool IsColliding() const { return m_isColliding; }
 	virtual bool CheckCollision(Entity* otherEntity, Graphics* graphics);
 
-	void UpdateRectangle();
+	virtual void UpdateRectangle();
 	MyRectangle GetRectangle();
 
 	void MoveEnt(const Direction& direction, Graphics* graphics);

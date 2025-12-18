@@ -42,5 +42,6 @@ public:
 	void SetScale(const sf::Vector2f& scale);
 	sf::Vector2f GetScale();;
 	std::string GetCurrentTex() { return m_currentTex; }
+	int GetFramNum() { return m_frameNum; }
 };
 

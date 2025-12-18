@@ -14,14 +14,6 @@ bool World::LoadTextures()
         return false;
     if (!m_graphics->LoadTexture("Walk Ani", "Data/Textures/MaleZombie/walk_combined.png"))
         return false;
-    if (!m_graphics->LoadTexture("FloorTL", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_04.png"))
-		return false;
-	if (!m_graphics->LoadTexture("FloorTM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_05.png"))
-		return false;
-	if (!m_graphics->LoadTexture("FloorTR", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_06.png"))
-		return false;
-    if (!m_graphics->LoadTexture("FloorM", "Data/Textures/CyberpunkWorld/Tiles/IndustrialTile_14.png"))
-        return false;
     if(!m_graphics->LoadTexture("PAttack Ani", "Data/Textures/CyberSprites/2 Punk/PunkAttack.png"))
 		return false;
     if (!m_graphics->LoadTexture("PWalk Ani", "Data/Textures/CyberSprites/2 Punk/PunkRun.png"))
@@ -42,6 +34,8 @@ bool World::LoadTextures()
         return false;
     if (!m_graphics->LoadTexture("Background1", "Data/Textures/CyberpunkWorld/Backgrounds/2/Day/5.png"))
         return false;
+    if (!m_graphics->LoadTexture("Road", "Data/Textures/Road.png"));
+        return false;
     return true;
 }
 
@@ -51,39 +45,25 @@ void World::CreateSprites()
     m_entityVec.push_back(newPlayer);
 	Enemy* newEnemy = new Enemy("Enemy", m_graphics);
 	m_entityVec.push_back(newEnemy);
-	Floor* newFloor = new Floor("Floor1", { 0,400 }, m_graphics, "FloorTL");
-	m_entityVec.push_back(newFloor);
-	Floor* newFloor2 = new Floor("Floor2", { 32,400 }, m_graphics, "FloorTM");
-	m_entityVec.push_back(newFloor2);
-	Floor* newFloor3 = new Floor("Floor3", { 64,400 }, m_graphics, "FloorTR");
-	m_entityVec.push_back(newFloor3);
-	Floor* newFloor4 = new Floor("Floor4", { 100,400 }, m_graphics, "FloorM");
-	m_entityVec.push_back(newFloor4);
-    Floor* newFloor5 = new Floor("Floor5", { 132,400 }, m_graphics, "FloorM");
-    m_entityVec.push_back(newFloor5);
-    Floor* newFloor6 = new Floor("Floor6", { 164,400 }, m_graphics, "FloorM");
-    m_entityVec.push_back(newFloor6);
-    Floor* newFloor7 = new Floor("Floor7", { 196,400 }, m_graphics, "FloorM");
-    m_entityVec.push_back(newFloor7);
-    Floor* newFloor8 = new Floor("Floor8", { 228,400 }, m_graphics, "FloorM");
-    m_entityVec.push_back(newFloor8);
 
-	Background* newBackground = new Background("Background", { 0,0 }, m_graphics, "Background4", 0.001f);
+	Background* newBackground = new Background("Background", { 0,0 }, m_graphics, "Background4", 0.001f, 1);
 	m_backgroundVec.push_back(newBackground);
-    Background* newBackgrounds = new Background("Background.5", { 1152,0 }, m_graphics, "Background4", 0.001f);
+    Background* newBackgrounds = new Background("Background.5", { 1152,0 }, m_graphics, "Background4", 0.001f, 1);
     m_backgroundVec.push_back(newBackgrounds);
-	Background* newBackground2 = new Background("Background2", { 0,0 }, m_graphics, "Background3", 0.375f);
+	Background* newBackground2 = new Background("Background2", { 0,0 }, m_graphics, "Background3", 0.375f, 1);
 	m_backgroundVec.push_back(newBackground2);
-    Background* newBackground2s = new Background("Background2.5", { 1152,0 }, m_graphics, "Background4", 0.375f);
+    Background* newBackground2s = new Background("Background2.5", { 1152,0 }, m_graphics, "Background4", 0.375f, 1);
     m_backgroundVec.push_back(newBackground2s);
-	Background* newBackground3 = new Background("Background3", { 0,0 }, m_graphics, "Background2", 0.75f);
+	Background* newBackground3 = new Background("Background3", { 0,0 }, m_graphics, "Background2", 0.75f, 1);
 	m_backgroundVec.push_back(newBackground3);
-    Background* newBackground3s = new Background("Background3.5", { 1152,0 }, m_graphics, "Background2", 0.75f);
+    Background* newBackground3s = new Background("Background3.5", { 1152,0 }, m_graphics, "Background2", 0.75f, 1);
     m_backgroundVec.push_back(newBackground3s);
-	Background* newBackground4 = new Background("Background4", { 0,0 }, m_graphics, "Background1", 1.5);
+	Background* newBackground4 = new Background("Background4", { 0,0 }, m_graphics, "Background1", 1.5, 1);
 	m_backgroundVec.push_back(newBackground4);
-    Background* newBackground4s = new Background("Background4.5", { 1152,0 }, m_graphics, "Background1", 1.5);
+    Background* newBackground4s = new Background("Background4.5", { 1152,0 }, m_graphics, "Background1", 1.5, 1);
     m_backgroundVec.push_back(newBackground4s);
+    Background* roadFloor = new Background("road", { 0, 324 }, m_graphics, "Road", 0, 2);
+    m_backgroundVec.push_back(roadFloor);
 
 }
 
@@ -102,6 +82,7 @@ int World::Run()
         return -1;
 
     sf::Clock uiDeltaClock;
+    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -139,7 +120,7 @@ int World::Run()
         }
 		for (auto background : m_backgroundVec)
         {
-            background->Draw(m_graphics, window);
+            background->Update(window, m_graphics);
         }
 
         for (auto& entity : m_entityVec)

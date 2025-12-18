@@ -18,7 +18,7 @@ Floor::Floor(const std::string& name, const sf::Vector2f& pos, Graphics* graphic
 void Floor::LoadTextures(Graphics* graphics)
 {
 	graphics->AddAnimationSet(m_name, m_textureName, AnimationSetData(m_textureName, 1, 32, 32));
-	m_textures[m_textureName] = sf::Vector2f(32, 32);
+	m_textures[m_textureName] = AnimationSetData(m_textureName, 1, 32, 32);
 }
 
 void Floor::Update(sf::RenderWindow& window, Graphics* graphics)

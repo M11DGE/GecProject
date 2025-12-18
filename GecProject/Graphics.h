@@ -26,6 +26,6 @@ public:
 	void SetSpritePos(const std::string& spriteName, const sf::Vector2f& distance);
 	void SetSpriteScale(const std::string& spriteName, const sf::Vector2f& scale);
 	void DrawHealthBar(sf::RenderWindow& window, const sf::Vector2f& position, const float& healthPercent);
-	void DrawBackground(sf::RenderWindow& window);
+	int GetSpriteFrameNum(const std::string& spriteName);
 };
 
