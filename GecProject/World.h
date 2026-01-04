@@ -17,6 +17,8 @@ private:
 	std::vector<Entity*> m_entityVec;
 	std::vector<Background*> m_backgroundVec;
 	int m_fps;
+	int m_playerPoints = 0;
+	bool m_gameOver{ false };
 
 public:
 	World() { m_graphics = new Graphics(), m_fps = 0; }

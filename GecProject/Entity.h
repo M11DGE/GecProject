@@ -28,7 +28,9 @@ protected:
 	int m_maxHealth = 0;
 	int m_flip = 1;
 	float m_scale = 1.0f;
+	int m_points = 0;
 	std::string m_name;
+	std::string m_gameName;
 	sf::Vector2f m_pos;
 	sf::Vector2f m_wandh;
 	std::string m_currentAni;
@@ -36,6 +38,10 @@ protected:
 	Direction m_collisionDir{ Direction::None };
 	bool m_isColliding{ false };
 	bool m_midAnimation{ false };
+	bool m_canCollide{ false };
+	bool m_destroy{ false };
+	bool m_spawnProj{ false };
+	bool m_winCondition{ false };
 	MyRectangle m_rectangle;
 	CollisionFlags m_collisionFlags;
 	std::unordered_map<std::string, AnimationSetData > m_textures;
@@ -53,6 +59,14 @@ public:
 	std::string GetName();
 	sf::Vector2f GetPos();
 	void SetPosX(const float& pos) { m_pos.x = pos; }
+	bool GetSpawnProj() { return m_spawnProj; }
+	sf::Vector2f GetProjSpawnPoint();
+	void SetSpawnProj(const bool& spawn) { m_spawnProj = spawn; }
+	Direction GetCurrentDir() { return m_currentDir; }
+	Direction GetFacingDirection() const { return (m_flip == 1) ? Direction::Right : Direction::Left; }
+	bool GetWinCondition() { return m_winCondition; }
+	void SetPoints(const int& points) { m_points += points; }
+	int GetPoints() { return m_points; }
 	
 	void ResetCollisionFlags();
 	bool IsBlocked(Direction dir) const;
@@ -60,13 +74,18 @@ public:
 	void SetColliding(bool colliding) { m_isColliding = colliding; }
 	bool IsColliding() const { return m_isColliding; }
 	virtual bool CheckCollision(Entity* otherEntity, Graphics* graphics);
+	sf::Vector2f PushEntity(const MyRectangle& otherRect);
 
 	virtual void UpdateRectangle();
 	MyRectangle GetRectangle();
 
-	void MoveEnt(const Direction& direction, Graphics* graphics);
+	virtual void MoveEnt(Graphics* graphics);
 	void MoveEnt(const sf::Vector2f& distance, Graphics* graphics);
 	void Flip(const int& flip, Graphics* graphics);
 
 	virtual void TakeDamage(const int& damage, Graphics* graphics);
+
+	bool ShouldDestroy() { return m_destroy; }
+
+	
 };

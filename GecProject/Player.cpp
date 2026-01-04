@@ -6,18 +6,22 @@ Player::Player(const std::string& entName, Graphics* graphics)
 {
 	m_health = 100;
 	m_maxHealth = 100;
-	m_pos = { 50,500 };
+	m_pos = { 150,500 };
 	m_name = entName;
+	m_gameName = "Player";
 	m_currentAni = "PIdle Ani";
 	m_clock.start();
+	m_coolDownClock.start();
+	m_canCollide = true;
+	m_winCondition = true;
 	graphics->CreateSprite(m_name);
 	graphics->SetSpritePos(m_name, m_pos);
 	graphics->SetSpriteScale(m_name, { 2,2 });
 	m_scale = graphics->GetSpriteScale(m_name).y;
 	LoadTextures(graphics);
-	healthbar.setPosition({ m_pos.x-10, m_pos.y - 20 });
-	healthbar.setSize({ 50, 10 });
-	healthbar.setFillColor(sf::Color::Red);
+	m_healthbar.setPosition({ m_pos.x-10, m_pos.y - 20 });
+	m_healthbar.setSize({ 50, 10 });
+	m_healthbar.setFillColor(sf::Color::Red);
 }
 
 void Player::Update(sf::RenderWindow& window, Graphics* graphics)
@@ -30,16 +34,22 @@ void Player::Update(sf::RenderWindow& window, Graphics* graphics)
 	UpdateRectangle();
 	graphics->UpdateSprite(m_name, m_clock);
 	Draw(graphics, window);
-	/*if (m_midJump == false)
-		Gravity(graphics);
-	else if (m_midJump == true)
-		Jump(graphics);*/
+
+	if (m_health <= 0)
+	{
+		std::cout << "dead" << std::endl;
+		m_currentAni = "PDead Ani";
+		graphics->ChangeTexture(m_name, m_currentAni, true);
+		UpdateRectangle();
+		graphics->UpdateSprite(m_name, m_clock);
+		Draw(graphics, window);
+	}
 }
 
 void Player::Draw(Graphics* graphics, sf::RenderWindow& window)
 {
 	graphics->DrawSprite(m_name, window);
-	window.draw(healthbar);
+	window.draw(m_healthbar);
 	window.draw(m_rectangle.GetHitbox());
 }
 
@@ -55,9 +65,8 @@ void Player::LoadTextures(Graphics* graphics)
 	m_textures["PDead Ani"] = AnimationSetData("PDead Ani", 6, 50, 50);
 	graphics->AddAnimationSet(m_name, "PHurt Ani", AnimationSetData("PHurt Ani", 2, 50, 50));
 	m_textures["PHurt Ani"] = AnimationSetData("PHurt Ani", 2, 30, 50);
-	graphics->AddAnimationSet(m_name, "PAttackRange Ani", AnimationSetData("PAttackRange Ani", 8, 50, 50));
-	m_textures["PAttackRange Ani"] = AnimationSetData("PAttackRange Ani", 8, 50, 50);
-	std::cout << "done" << std::endl;
+	graphics->AddAnimationSet(m_name, "PAttackRange Ani", AnimationSetData("PAttackRange Ani", 8, 30, 50));
+	m_textures["PAttackRange Ani"] = AnimationSetData("PAttackRange Ani", 8, 30, 50);
 }
 
 void Player::TakeDamage(const int& damage, Graphics* graphics)
@@ -65,17 +74,10 @@ void Player::TakeDamage(const int& damage, Graphics* graphics)
 	m_health -= damage;
 	m_currentAni = "PHurt Ani";
 	graphics->ChangeTexture(m_name, m_currentAni, true);
-}
 
-void Player::Jump(Graphics* graphics)
-{
-	m_jumpClock.start();
-	MoveEnt({0,-10}, graphics);
-	if (m_jumpClock.getElapsedTime().asSeconds() >= 0.5)
-	{
-		m_midJump = false;
-		m_jumpClock.reset();
-	}
+	if (m_health <= 0)
+		std::cout << "dead" << std::endl;
+		m_destroy = true;
 }
 
 void Player::Inputs(Graphics* graphics)
@@ -84,15 +86,17 @@ void Player::Inputs(Graphics* graphics)
 	{
 		m_currentAni = "PAttack Ani";
 		if (m_midAnimation == false)
-		graphics->ChangeTexture(m_name, m_currentAni, true);
+			graphics->ChangeTexture(m_name, m_currentAni, true);
 		UpdateRectangle();
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) && m_coolDownClock.getElapsedTime().asSeconds()>=0.25f)
 	{
 		m_currentAni = "PAttackRange Ani";
 		if (m_midAnimation == false)
-		graphics->ChangeTexture(m_name, m_currentAni, true);
+			graphics->ChangeTexture(m_name, m_currentAni, true);
+		m_spawnProj = true;
 		UpdateRectangle();
+		m_coolDownClock.restart();
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 	{
@@ -119,7 +123,7 @@ void Player::Inputs(Graphics* graphics)
 		m_currentDir = Direction::None;
 		m_currentAni = "PIdle Ani";
 	}
-	MoveEnt(m_currentDir, graphics);
+	MoveEnt(graphics);
 }
 
 void Player::UpdateRectangle()
@@ -142,7 +146,6 @@ void Player::RoadPos()
 
 void Player::UpdateHealthBar()
 {
-	healthbar.setPosition({ m_pos.x - 10, m_pos.y - 20 });
-	if (m_health > 0)
-		healthbar.setSize({ 50.f * (m_health / m_maxHealth), 10.f });
+	m_healthbar.setPosition({ m_pos.x - 10.f, m_pos.y - 20.f });
+	m_healthbar.setSize({ (50.f * m_health) / m_maxHealth, 10.f });
 }

@@ -4,18 +4,15 @@
 bool Graphics::LoadTexture(const std::string& name, const std::string& filename)
 {
     if (m_textureMap.find(name) != m_textureMap.end()) {
-        std::cout << "duplicate" << name << std::endl;
         return false;
     }
 
     sf::Texture* texture = new sf::Texture();
     if (!texture->loadFromFile(filename)) {
-        std::cout << "cant load" << name << std::endl;
         return false;
     }
 
     m_textureMap[name] = texture;
-    std::cout << "loaded" << name << std::endl;
     return true;
 }
 std::string Graphics::GetTexture(const std::string& name)
@@ -31,16 +28,13 @@ std::string Graphics::GetSpriteName(const std::string& spriteName)
 bool Graphics::AddAnimationSet(const std::string& spriteName, const std::string& setName, const AnimationSetData& setData)
 {
     if (m_textureMap.find(setData.m_textureName) == m_textureMap.end()) {
-        std::cout << "gone wrong" << std::endl;
         return false;
     }
     if (m_spriteMap.find(spriteName) == m_spriteMap.end()) {
-        std::cout << "not good"<< std::endl;
         return false;
     }
 
     m_spriteMap[spriteName]->AddAnimationSet(setName, setData, m_textureMap[setData.m_textureName]);
-    std::cout << "alls good" << std::endl;
     return true;
 }
 

@@ -1,13 +1,13 @@
 #include "Background.h"
 
-Background::Background(const std::string& name, const sf::Vector2f& pos, Graphics* graphics, std::string texName, const float& speed, const int& gbNum)
+Background::Background(const std::string& name, const sf::Vector2f& pos, Graphics* graphics, std::string texName, const float& speed, const int& bgnum)
 {
 	m_name = name;
 	m_textureName = texName;
 	m_pos = pos;
 	m_currentAni = m_textureName;
 	m_speed = speed;
-	bgNum = gbNum;
+	bgNum = bgnum;
 	graphics->CreateSprite(m_name);
 	graphics->SetSpritePos(m_name, m_pos);
 	LoadTextures(graphics);
@@ -37,6 +37,7 @@ void Background::LoadTextures(Graphics* graphics)
 void Background::Update(sf::RenderWindow& window, Graphics* graphics)
 {
 	UpdateRectangle();
+	graphics->UpdateSprite(m_name);
 	Draw(graphics, window);
 }
 

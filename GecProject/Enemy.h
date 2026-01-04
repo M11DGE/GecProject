@@ -5,8 +5,13 @@ class Enemy :
 {
     private:
         sf::Clock m_clock;
+        sf::Clock m_pauseClock;
+        sf::Clock m_spawnClock;
+        bool paused{ false };
+		bool m_colliding{ false };
+        float m_lanePos;
 public:
-        Enemy(const std::string& entName, Graphics* graphics);
+        Enemy(const std::string& entName, Graphics* graphics, const float& startPos);
         virtual void Update(sf::RenderWindow& window, Graphics* graphics)override;
 		virtual bool CheckCollision(Entity* other, Graphics* graphics)override;
         virtual void Draw(Graphics* graphics, sf::RenderWindow& window)override;

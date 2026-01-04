@@ -4,11 +4,9 @@
 void Sprite::AddAnimationSet(const std::string& name, const AnimationSetData& setData, sf::Texture* texture)
 {
     if (m_AnimationSet.find(name) != m_AnimationSet.end()) {
-        std::cout << "not worked" << std::endl;
         return;
     }
     m_AnimationSet[name] = AnimationSet(setData, texture);
-    std::cout << "loaded" << name << std::endl;
 }
 
 void Sprite::DrawSprite(sf::RenderWindow& window)
